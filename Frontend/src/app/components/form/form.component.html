@@ -1,0 +1,64 @@
+<div class="form-container">
+  <form (submit)="onSubmit()">
+    <h2>Configuration Settings</h2>
+    <label for="totalTickets">Total Tickets:</label>
+    <input
+      type="number"
+      id="totalTickets"
+      [(ngModel)]="config.totalTickets"
+      required
+      min="1"
+      #totalTickets="ngModel"
+    />
+    <div *ngIf="totalTickets.invalid && totalTickets.touched" class="error">
+      Total Tickets must be greater than 0.
+    </div>
+
+    <label for="maxCapacity">Max Ticket Capacity:</label>
+    <input
+      type="number"
+      id="maxCapacity"
+      [(ngModel)]="config.maxCapacity"
+      required
+      [max]="config.totalTickets"
+      min="1"
+      #maxCapacity="ngModel"
+    />
+    <div *ngIf="maxCapacity.invalid && maxCapacity.touched" class="error">
+      Max Capacity must be between 1 and Total Tickets.
+    </div>
+
+    <label for="releaseRate">Ticket Release Rate:</label>
+    <input
+      type="number"
+      id="releaseRate"
+      [(ngModel)]="config.releaseRate"
+      required
+      min="1"
+      #releaseRate="ngModel"
+    />
+    <div *ngIf="releaseRate.invalid && releaseRate.touched" class="error">
+      Release Rate must be greater than 0.
+    </div>
+
+    <label for="retrievalRate">Customer Retrieval Rate:</label>
+    <input
+      type="number"
+      id="retrievalRate"
+      [(ngModel)]="config.retrievalRate"
+      required
+      min="1"
+      #retrievalRate="ngModel"
+    />
+    <div *ngIf="retrievalRate.invalid && retrievalRate.touched" class="error">
+      Retrieval Rate must be greater than 0.
+    </div>
+
+    <button type="submit" [disabled]="!formValid()">Configure</button>
+  </form>
+  <div class="controls">
+    <button (click)="startSystem()">Start</button>
+    <button (click)="stopSystem()">Stop</button>
+    <button (click)="resetSystem()">Reset</button>
+  </div>
+</div>

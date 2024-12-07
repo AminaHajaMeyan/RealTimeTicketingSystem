@@ -1,0 +1,169 @@
+[2024-12-06 12:49:30] System started with configuration: Configuration [Total Tickets: 10, Max Capacity: 5, Release Rate: 2, Retrieval Rate: 1]
+[2024-12-06 12:49:30] Vendor 1 added Ticket[ID=1, Seat='Seat-1', Event='Concert Event']. Current pool size: 1/5
+[2024-12-06 12:49:30] Ticket purchased: Ticket[ID=1, Seat='Seat-1', Event='Concert Event']. Total tickets sold: 1
+[2024-12-06 12:49:30] Vendor 2 added Ticket[ID=2, Seat='Seat-2', Event='Concert Event']. Current pool size: 1/5
+[2024-12-06 12:49:30] Vendor 3 added Ticket[ID=3, Seat='Seat-3', Event='Concert Event']. Current pool size: 2/5
+[2024-12-06 12:49:30] Vendor 4 added Ticket[ID=4, Seat='Seat-4', Event='Concert Event']. Current pool size: 3/5
+[2024-12-06 12:49:30] Vendor 5 added Ticket[ID=5, Seat='Seat-5', Event='Concert Event']. Current pool size: 4/5
+[2024-12-06 12:49:30] Ticket purchased: Ticket[ID=2, Seat='Seat-2', Event='Concert Event']. Total tickets sold: 2
+[2024-12-06 12:49:30] Ticket purchased: Ticket[ID=3, Seat='Seat-3', Event='Concert Event']. Total tickets sold: 3
+[2024-12-06 12:49:30] Ticket purchased: Ticket[ID=4, Seat='Seat-4', Event='Concert Event']. Total tickets sold: 4
+[2024-12-06 12:49:30] Ticket purchased: Ticket[ID=5, Seat='Seat-5', Event='Concert Event']. Total tickets sold: 5
+[2024-12-06 12:49:32] Real-Time Status: Pool Size: 0, Tickets Sold: 5, Remaining Tickets: 5, Waiting Customers: 10, Waiting Vendors: 0
+[2024-12-06 12:49:32] Vendor 5 added Ticket[ID=7, Seat='Seat-7', Event='Concert Event']. Current pool size: 1/5
+[2024-12-06 12:49:32] Vendor 4 added Ticket[ID=8, Seat='Seat-8', Event='Concert Event']. Current pool size: 2/5
+[2024-12-06 12:49:32] Vendor 1 added Ticket[ID=6, Seat='Seat-6', Event='Concert Event']. Current pool size: 3/5
+[2024-12-06 12:49:32] Vendor 3 added Ticket[ID=6, Seat='Seat-6', Event='Concert Event']. Current pool size: 4/5
+[2024-12-06 12:49:32] Vendor 2 added Ticket[ID=9, Seat='Seat-9', Event='Concert Event']. Current pool size: 5/5
+[2024-12-06 12:49:32] Ticket purchased: Ticket[ID=7, Seat='Seat-7', Event='Concert Event']. Total tickets sold: 6
+[2024-12-06 12:49:32] Ticket purchased: Ticket[ID=8, Seat='Seat-8', Event='Concert Event']. Total tickets sold: 7
+[2024-12-06 12:49:32] Ticket purchased: Ticket[ID=6, Seat='Seat-6', Event='Concert Event']. Total tickets sold: 8
+[2024-12-06 12:49:32] Ticket purchased: Ticket[ID=6, Seat='Seat-6', Event='Concert Event']. Total tickets sold: 9
+[2024-12-06 12:49:32] Ticket purchased: Ticket[ID=9, Seat='Seat-9', Event='Concert Event']. Total tickets sold: 10
+[2024-12-06 12:49:32] All tickets sold! Terminating the system...
+[2024-12-06 12:49:57] Stop command received. Terminating the system...
+[2024-12-06 12:49:57] Final Status: Real-Time Status: Pool Size: 0, Tickets Sold: 10, Remaining Tickets: 0, Waiting Customers: 0, Waiting Vendors: 0
+[2024-12-06 12:49:57] All threads stopped. System terminated gracefully.
+[2024-12-06 12:54:27] System started with configuration: Configuration [Total Tickets: 10, Max Capacity: 5, Release Rate: 2, Retrieval Rate: 1]
+[2024-12-06 12:54:27] Vendor 4 added Ticket[ID=4, Seat='Seat-4', Event='Concert Event']. Current pool size: 1/5
+[2024-12-06 12:54:27] Ticket purchased: Ticket[ID=4, Seat='Seat-4', Event='Concert Event']. Total tickets sold: 1
+[2024-12-06 12:54:27] Vendor 2 added Ticket[ID=3, Seat='Seat-3', Event='Concert Event']. Current pool size: 1/5
+[2024-12-06 12:54:27] Vendor 5 added Ticket[ID=5, Seat='Seat-5', Event='Concert Event']. Current pool size: 2/5
+[2024-12-06 12:54:27] Vendor 3 added Ticket[ID=2, Seat='Seat-2', Event='Concert Event']. Current pool size: 3/5
+[2024-12-06 12:54:27] Vendor 1 added Ticket[ID=1, Seat='Seat-1', Event='Concert Event']. Current pool size: 4/5
+[2024-12-06 12:54:27] Ticket purchased: Ticket[ID=3, Seat='Seat-3', Event='Concert Event']. Total tickets sold: 2
+[2024-12-06 12:54:27] Ticket purchased: Ticket[ID=5, Seat='Seat-5', Event='Concert Event']. Total tickets sold: 3
+[2024-12-06 12:54:27] Ticket purchased: Ticket[ID=2, Seat='Seat-2', Event='Concert Event']. Total tickets sold: 4
+[2024-12-06 12:54:27] Ticket purchased: Ticket[ID=1, Seat='Seat-1', Event='Concert Event']. Total tickets sold: 5
+[2024-12-06 12:54:29] Vendor 3 added Ticket[ID=7, Seat='Seat-7', Event='Concert Event']. Current pool size: 1/5
+[2024-12-06 12:54:29] Real-Time Status: Pool Size: 0, Tickets Sold: 5, Remaining Tickets: 5, Waiting Customers: 10, Waiting Vendors: 0
+[2024-12-06 12:54:29] Vendor 1 added Ticket[ID=8, Seat='Seat-8', Event='Concert Event']. Current pool size: 2/5
+[2024-12-06 12:54:29] Vendor 4 added Ticket[ID=6, Seat='Seat-6', Event='Concert Event']. Current pool size: 3/5
+[2024-12-06 12:54:29] Vendor 5 added Ticket[ID=9, Seat='Seat-9', Event='Concert Event']. Current pool size: 4/5
+[2024-12-06 12:54:29] Vendor 2 added Ticket[ID=10, Seat='Seat-10', Event='Concert Event']. Current pool size: 5/5
+[2024-12-06 12:54:29] Ticket purchased: Ticket[ID=7, Seat='Seat-7', Event='Concert Event']. Total tickets sold: 6
+[2024-12-06 12:54:29] Ticket purchased: Ticket[ID=8, Seat='Seat-8', Event='Concert Event']. Total tickets sold: 7
+[2024-12-06 12:54:29] Ticket purchased: Ticket[ID=6, Seat='Seat-6', Event='Concert Event']. Total tickets sold: 8
+[2024-12-06 12:54:29] Ticket purchased: Ticket[ID=9, Seat='Seat-9', Event='Concert Event']. Total tickets sold: 9
+[2024-12-06 12:54:29] Ticket purchased: Ticket[ID=10, Seat='Seat-10', Event='Concert Event']. Total tickets sold: 10
+[2024-12-06 12:54:29] All tickets sold! Terminating the system...
+[2024-12-06 12:54:31] Real-Time Status: Pool Size: 0, Tickets Sold: 10, Remaining Tickets: 0, Waiting Customers: 0, Waiting Vendors: 0
+[2024-12-06 12:54:42] Stop command received. Terminating the system...
+[2024-12-06 12:54:42] Final Status: Real-Time Status: Pool Size: 0, Tickets Sold: 10, Remaining Tickets: 0, Waiting Customers: 0, Waiting Vendors: 0
+[2024-12-06 12:54:42] All threads stopped. System terminated gracefully.
+[2024-12-07 22:52:46] System terminated by user.
+[2024-12-07 22:53:33] System started with configuration: Configuration [Total Tickets: 10, Max Capacity: 9, Release Rate: 5, Retrieval Rate: 9]
+[2024-12-07 22:53:33] Vendor 3 added Ticket[ID=3, Seat='Seat-3', Event='Concert Event']. Current pool size: 1/9
+[2024-12-07 22:53:33] Ticket purchased: Ticket[ID=3, Seat='Seat-3', Event='Concert Event']. Total tickets sold: 1
+[2024-12-07 22:53:33] Vendor 2 added Ticket[ID=2, Seat='Seat-2', Event='Concert Event']. Current pool size: 1/9
+[2024-12-07 22:53:33] Vendor 4 added Ticket[ID=4, Seat='Seat-4', Event='Concert Event']. Current pool size: 2/9
+[2024-12-07 22:53:33] Vendor 1 added Ticket[ID=1, Seat='Seat-1', Event='Concert Event']. Current pool size: 3/9
+[2024-12-07 22:53:33] Vendor 5 added Ticket[ID=5, Seat='Seat-5', Event='Concert Event']. Current pool size: 4/9
+[2024-12-07 22:53:33] Ticket purchased: Ticket[ID=2, Seat='Seat-2', Event='Concert Event']. Total tickets sold: 2
+[2024-12-07 22:53:33] Ticket purchased: Ticket[ID=4, Seat='Seat-4', Event='Concert Event']. Total tickets sold: 3
+[2024-12-07 22:53:33] Ticket purchased: Ticket[ID=1, Seat='Seat-1', Event='Concert Event']. Total tickets sold: 4
+[2024-12-07 22:53:33] Ticket purchased: Ticket[ID=5, Seat='Seat-5', Event='Concert Event']. Total tickets sold: 5
+[2024-12-07 22:53:34] Stop command received. Terminating the system...
+[2024-12-07 22:53:34] Final Status: Real-Time Status: Pool Size: 0, Tickets Sold: 5, Remaining Tickets: 5, Waiting Customers: 10, Waiting Vendors: 0
+[2024-12-07 22:53:34] Vendor 1 interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] All threads stopped. System terminated gracefully.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Vendor 4 interrupted.
+[2024-12-07 22:53:34] Customer 7 interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer 6 interrupted.
+[2024-12-07 22:53:34] Vendor 3 interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Vendor 5 interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Vendor 2 interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer 3 interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer interrupted.
+[2024-12-07 22:53:34] Customer 5 interrupted.
+[2024-12-07 22:53:34] Customer 9 interrupted.
+[2024-12-07 22:53:34] Customer 8 interrupted.
+[2024-12-07 22:53:34] Customer 1 interrupted.
+[2024-12-07 22:53:34] Customer 2 interrupted.
+[2024-12-07 22:53:34] Customer 4 interrupted.
+[2024-12-07 22:53:34] Customer 10 interrupted.
+[2024-12-07 22:53:35] Real-Time Status: Pool Size: 0, Tickets Sold: 5, Remaining Tickets: 5, Waiting Customers: 0, Waiting Vendors: 0

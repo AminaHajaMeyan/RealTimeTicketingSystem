@@ -1,0 +1,14 @@
+.activity-log {
+  flex: 1;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  max-height: 500px;
+  overflow-y: scroll;
+  background-color: #f1f1f1;
+}
+
+.activity-log h3 {
+  color: #027c5f;
+  margin-bottom: 10px;
+}
