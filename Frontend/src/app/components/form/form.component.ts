@@ -8,48 +8,44 @@ import { TicketService } from '../../services/ticket.service';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './form.component.html',
-  styleUrls: ['./form.component.css'],
+  styleUrls: ['./form.component.css']
 })
 export class FormComponent {
   config = {
     totalTickets: 100,
     maxCapacity: 10,
     releaseRate: 2,
-    retrievalRate: 1,
+    retrievalRate: 1
   };
 
   constructor(private ticketService: TicketService) {}
 
   onSubmit() {
-    if (this.formValid()) {
-      this.ticketService.configureSystem(this.config).subscribe({
-        next: () => alert('System configured successfully!'),
-        error: (err) => alert('Failed to configure system: ' + err.message),
-      });
-    } else {
-      alert('Please correct the form errors before submitting.');
-    }
+    this.ticketService.configureSystem(this.config).subscribe({
+      next: () => alert('System configured successfully!'),
+      error: (err) => alert('Failed to configure system: ' + err.message)
+    });
+  }
+
+  resetForm() {
+    this.config = {
+      totalTickets: 100,
+      maxCapacity: 10,
+      releaseRate: 2,
+      retrievalRate: 1
+    };
   }
 
   startSystem() {
-    this.ticketService.startSystem().subscribe({
-      next: () => alert('System started.'),
-      error: (err) => alert('Failed to start system: ' + err.message),
-    });
+    this.ticketService.startSystem().subscribe(() => alert('System started.'));
   }
 
   stopSystem() {
-    this.ticketService.stopSystem().subscribe({
-      next: () => alert('System stopped.'),
-      error: (err) => alert('Failed to stop system: ' + err.message),
-    });
+    this.ticketService.stopSystem().subscribe(() => alert('System stopped.'));
   }
 
   resetSystem() {
-    this.ticketService.resetSystem().subscribe({
-      next: () => alert('System reset.'),
-      error: (err) => alert('Failed to reset system: ' + err.message),
-    });
+    this.ticketService.resetSystem().subscribe(() => alert('System reset.'));
   }
 
   formValid() {

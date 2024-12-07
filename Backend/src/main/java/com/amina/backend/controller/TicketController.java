@@ -1,33 +1,40 @@
 package com.amina.backend.controller;
 
 import com.amina.backend.config.TicketConfig;
+import com.amina.backend.service.TicketService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 public class TicketController {
 
+    private final TicketService ticketService;
+
+    public TicketController(TicketService ticketService) {
+        this.ticketService = ticketService;
+    }
+
     @PostMapping("/configure")
     public String configureSystem(@RequestBody TicketConfig config) {
-        return "System configured with: " +
-                "Total Tickets = " + config.getTotalTickets() +
-                ", Max Capacity = " + config.getMaxCapacity() +
-                ", Release Rate = " + config.getReleaseRate() +
-                ", Retrieval Rate = " + config.getRetrievalRate();
+        ticketService.configureSystem(config);
+        return "System configured successfully!";
     }
 
     @PostMapping("/start")
     public String startSystem() {
+        ticketService.startSystem();
         return "System started.";
     }
 
     @PostMapping("/stop")
     public String stopSystem() {
+        ticketService.stopSystem();
         return "System stopped.";
     }
 
     @PostMapping("/reset")
     public String resetSystem() {
+        ticketService.resetSystem();
         return "System reset.";
     }
 }

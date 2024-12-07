@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class TicketPool {
-    private final int maxCapacity;
     private final Queue<String> tickets = new LinkedList<>();
+    private final int maxCapacity;
 
     public TicketPool(int maxCapacity) {
         this.maxCapacity = maxCapacity;
@@ -23,7 +23,7 @@ public class TicketPool {
         return tickets.poll();
     }
 
-    public synchronized int getRemainingTickets() {
-        return tickets.size();
+    public synchronized void clear() {
+        tickets.clear();
     }
 }

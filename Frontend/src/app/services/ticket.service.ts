@@ -1,28 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root' // Ensures it is available globally
+  providedIn: 'root',
 })
 export class TicketService {
-  private baseUrl = 'http://localhost:8080/api'; // Backend API base URL
+  private baseUrl = 'http://localhost:8080/api';
 
   constructor(private http: HttpClient) {}
 
-  configureSystem(config: any) {
-    return this.http.post(`${this.baseUrl}/configure`, config);
+  configureSystem(config: any): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/configure`, config);
   }
 
-  startSystem() {
-    return this.http.post(`${this.baseUrl}/start`, {});
+  startSystem(): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/start`, {});
   }
 
-  stopSystem() {
-    return this.http.post(`${this.baseUrl}/stop`, {});
+  stopSystem(): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/stop`, {});
   }
 
-  resetSystem() {
-    return this.http.post(`${this.baseUrl}/reset`, {});
+  resetSystem(): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/reset`, {});
   }
 
   getActivityStream(): EventSource {

@@ -7,10 +7,10 @@ import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [HeaderComponent, FormComponent, LogsComponent, HttpClientModule], // Add HttpClientModule here
+  imports: [HeaderComponent, FormComponent, LogsComponent, HttpClientModule], // Import modules
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title: string = 'Ticketing System';
+  title: string = 'Ticketing System'; // App title
 }
