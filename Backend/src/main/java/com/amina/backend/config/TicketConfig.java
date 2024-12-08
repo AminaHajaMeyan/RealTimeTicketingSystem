@@ -6,18 +6,13 @@ public class TicketConfig {
     private int releaseRate;
     private int retrievalRate;
 
-    public TicketConfig() {
-        // Default constructor
-    }
+    public TicketConfig() {}
 
     public int getTotalTickets() {
         return totalTickets;
     }
 
     public void setTotalTickets(int totalTickets) {
-        if (totalTickets <= 0) {
-            throw new IllegalArgumentException("Total tickets must be greater than 0.");
-        }
         this.totalTickets = totalTickets;
     }
 
@@ -26,9 +21,6 @@ public class TicketConfig {
     }
 
     public void setMaxCapacity(int maxCapacity) {
-        if (maxCapacity <= 0) {
-            throw new IllegalArgumentException("Max capacity must be greater than 0.");
-        }
         this.maxCapacity = maxCapacity;
     }
 
@@ -37,9 +29,6 @@ public class TicketConfig {
     }
 
     public void setReleaseRate(int releaseRate) {
-        if (releaseRate <= 0) {
-            throw new IllegalArgumentException("Release rate must be greater than 0.");
-        }
         this.releaseRate = releaseRate;
     }
 
@@ -48,13 +37,13 @@ public class TicketConfig {
     }
 
     public void setRetrievalRate(int retrievalRate) {
-        if (retrievalRate <= 0) {
-            throw new IllegalArgumentException("Retrieval rate must be greater than 0.");
-        }
         this.retrievalRate = retrievalRate;
     }
 
     public void validate() {
+        if (totalTickets <= 0 || maxCapacity <= 0 || releaseRate <= 0 || retrievalRate <= 0) {
+            throw new IllegalArgumentException("All rates and capacities must be greater than 0.");
+        }
         if (maxCapacity > totalTickets) {
             throw new IllegalArgumentException("Max capacity cannot exceed total tickets.");
         }

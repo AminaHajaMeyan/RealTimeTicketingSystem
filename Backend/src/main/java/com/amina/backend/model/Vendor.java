@@ -5,22 +5,22 @@ import com.amina.backend.service.TicketService;
 public class Vendor implements Runnable {
     private final int vendorId;
     private final TicketService ticketService;
-    private final int releaseRate;
 
-    public Vendor(int vendorId, TicketService ticketService, int releaseRate) {
+    public Vendor(int vendorId, TicketService ticketService) {
         this.vendorId = vendorId;
         this.ticketService = ticketService;
-        this.releaseRate = releaseRate;
     }
 
     @Override
     public void run() {
         try {
             while (ticketService.isSystemRunning()) {
-                for (int i = 0; i < releaseRate; i++) {
-                    ticketService.addTicket("Vendor-" + vendorId);
+                // Randomly add a ticket
+                if (!ticketService.addTicket("Vendor-" + vendorId)) {
+                    Thread.sleep(500); // Wait if pool is full
                 }
-                Thread.sleep(2000); // Simulate delay for vendors
+                // Random delay between ticket additions
+                Thread.sleep((long) (Math.random() * 1000));
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

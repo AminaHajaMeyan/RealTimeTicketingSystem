@@ -1,13 +1,17 @@
 package com.amina.backend.service;
 
 import com.amina.backend.config.TicketConfig;
+import com.amina.backend.model.Customer;
 import com.amina.backend.model.TicketPool;
+import com.amina.backend.model.Vendor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Logger;
 
 @Service
 public class TicketService {
@@ -17,126 +21,112 @@ public class TicketService {
     private ExecutorService executor;
     private final AtomicInteger totalTicketsAdded = new AtomicInteger(0);
     private final AtomicInteger totalTicketsSold = new AtomicInteger(0);
-    private static final Logger logger = Logger.getLogger(TicketService.class.getName());
 
     public void configureSystem(TicketConfig config) {
-        validateConfig(config);
+        config.validate();
         this.config = config;
         this.ticketPool = new TicketPool(config.getMaxCapacity());
-        logger.info("System configured: Total Tickets = " + config.getTotalTickets() +
-                ", Max Capacity = " + config.getMaxCapacity() +
-                ", Release Rate = " + config.getReleaseRate() +
-                ", Retrieval Rate = " + config.getRetrievalRate());
+        saveConfigToFile("system-config.json");
+        System.out.println("Configuration Complete: " + getSummary());
     }
 
     public void startSystem() {
-        if (config == null) {
-            throw new IllegalStateException("System is not configured.");
-        }
-        if (systemRunning) {
-            logger.warning("System is already running.");
-            return;
-        }
-
-        ticketPool.clear(); // Ensure the pool starts empty
+        if (systemRunning) throw new IllegalStateException("System is already running.");
         systemRunning = true;
-        executor = Executors.newFixedThreadPool(15); // 10 customers + 5 vendors
-        logger.info("System started. Vendors and customers are now active.");
-
-        // Start vendors
-        for (int i = 1; i <= 5; i++) {
-            final int vendorId = i; // Final copy for lambda
-            executor.submit(() -> {
-                try {
-                    while (isSystemRunning()) {
-                        Thread.sleep(config.getReleaseRate() * 100); // Delay based on release rate
-                        addTicket("Vendor-" + vendorId);
-                    }
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    logger.info("Vendor-" + vendorId + " interrupted. Exiting.");
-                }
-            });
-        }
-
-        // Start customers
-        for (int i = 1; i <= 10; i++) {
-            final int customerId = i; // Final copy for lambda
-            executor.submit(() -> {
-                try {
-                    while (isSystemRunning()) {
-                        Thread.sleep(config.getRetrievalRate() * 100); // Delay based on retrieval rate
-                        purchaseTicket("Customer-" + customerId);
-                    }
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    logger.info("Customer-" + customerId + " interrupted. Exiting.");
-                }
-            });
-        }
+        executor = Executors.newFixedThreadPool(15);
+        startVendors();
+        startCustomers();
     }
 
     public void stopSystem() {
         systemRunning = false;
         if (executor != null) {
-            executor.shutdownNow();
+            executor.shutdown();
+            try {
+                if (!executor.awaitTermination(10, java.util.concurrent.TimeUnit.SECONDS)) {
+                    executor.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                executor.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
         }
-        logger.info("System stopped.");
+        System.out.println("System Stopped: " + getSummary());
     }
 
     public void resetSystem() {
         stopSystem();
-        if (ticketPool != null) {
-            ticketPool.clear();
-        }
+        if (ticketPool != null) ticketPool.clear();
         totalTicketsAdded.set(0);
         totalTicketsSold.set(0);
-        logger.info("System reset.");
-    }
-
-    public synchronized boolean addTicket(String vendorId) {
-        if (totalTicketsAdded.get() >= config.getTotalTickets()) {
-            logger.info("Maximum number of tickets reached. Vendor " + vendorId + " cannot add more tickets.");
-            return false;
-        }
-        int ticketId = totalTicketsAdded.incrementAndGet();
-        String ticket = "Ticket[ID=" + ticketId + ", Seat='Seat-" + ticketId + "', Event='Concert Event']";
-        boolean success = ticketPool.addTicket(ticket);
-        if (success) {
-            logger.info("Vendor " + vendorId + " added " + ticket + ". Current pool size: " +
-                    ticketPool.getCurrentSize() + "/" + config.getMaxCapacity());
-        }
-        return success;
-    }
-
-    public synchronized boolean purchaseTicket(String customerId) {
-        String ticket = ticketPool.removeTicket();
-        if (ticket != null) {
-            logger.info("Customer " + customerId + " purchased: " + ticket +
-                    ". Total tickets sold: " + totalTicketsSold.incrementAndGet());
-            return true;
-        } else {
-            logger.warning("Customer " + customerId + " could not purchase a ticket. Pool is empty.");
-            return false;
-        }
+        System.out.println("System Reset.");
     }
 
     public boolean isSystemRunning() {
         return systemRunning && totalTicketsSold.get() < config.getTotalTickets();
     }
 
-    private void validateConfig(TicketConfig config) {
-        if (config.getTotalTickets() <= 0) {
-            throw new IllegalArgumentException("Total tickets must be greater than 0.");
+    public synchronized boolean addTicket(String vendorId) {
+        if (totalTicketsAdded.get() >= config.getTotalTickets()) {
+            return false; // Stop adding tickets if total limit is reached
         }
-        if (config.getMaxCapacity() <= 0 || config.getMaxCapacity() > config.getTotalTickets()) {
-            throw new IllegalArgumentException("Max capacity must be less than or equal to total tickets.");
+        if (ticketPool.getCurrentSize() >= config.getMaxCapacity()) {
+            System.out.println(vendorId + " cannot add tickets. Pool is full. Vendors waiting...");
+            return false; // Pool is full
         }
-        if (config.getReleaseRate() <= 0 || config.getReleaseRate() > config.getMaxCapacity()) {
-            throw new IllegalArgumentException("Release rate must be positive and less than or equal to max capacity.");
+        int ticketId = totalTicketsAdded.incrementAndGet();
+        String ticket = "Ticket[ID=" + ticketId + ", Seat='Seat-" + ticketId + "', Event='Concert Event']";
+        ticketPool.addTicket(ticket);
+        System.out.println(vendorId + " added " + ticket + ". Current pool size: " +
+                ticketPool.getCurrentSize() + "/" + config.getMaxCapacity());
+        return true;
+    }
+
+    public synchronized boolean purchaseTicket(String customerId) {
+        if (totalTicketsSold.get() >= config.getTotalTickets()) {
+            systemRunning = false; // Stop the system when all tickets are sold
+            System.out.println("All tickets sold. Stopping the system.");
+            return false;
         }
-        if (config.getRetrievalRate() <= 0 || config.getRetrievalRate() > config.getMaxCapacity()) {
-            throw new IllegalArgumentException("Retrieval rate must be positive and less than or equal to max capacity.");
+        String ticket = ticketPool.removeTicket();
+        if (ticket != null) {
+            int ticketId = totalTicketsSold.incrementAndGet();
+            System.out.println(customerId + " purchased: Ticket[ID=" + ticketId +
+                    ", Seat='Seat-" + ticketId + "', Event='Concert Event']");
+            return true;
+        }
+        return false; // No tickets available
+    }
+
+    public String getSummary() {
+        return "Summary: " +
+                "Total Tickets Sold = " + totalTicketsSold.get() +
+                ", Current Pool Size = " + ticketPool.getCurrentSize() +
+                ", Total Tickets Configured = " + config.getTotalTickets() +
+                ", Max Capacity = " + config.getMaxCapacity() +
+                ", System Running = " + systemRunning;
+    }
+
+    private void startVendors() {
+        for (int i = 1; i <= 5; i++) { // Number of vendors
+            int vendorId = i;
+            executor.submit(new Vendor(vendorId, this)); // Submit Vendor thread
+        }
+    }
+
+    private void startCustomers() {
+        for (int i = 1; i <= 10; i++) { // Number of customers
+            int customerId = i;
+            executor.submit(new Customer(customerId, this)); // Submit Customer thread
+        }
+    }
+
+
+    private void saveConfigToFile(String filePath) {
+        try {
+            new ObjectMapper().writeValue(new File(filePath), config);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to save configuration to file.", e);
         }
     }
 }

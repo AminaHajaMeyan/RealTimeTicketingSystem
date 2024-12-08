@@ -17,26 +17,17 @@ public class TicketPool {
     public synchronized boolean addTicket(String ticket) {
         if (tickets.size() < maxCapacity) {
             tickets.add(ticket);
-            System.out.println("Ticket added: " + ticket + " | Current pool size: " + tickets.size() + "/" + maxCapacity);
             return true;
         }
-        return false; // Pool is full
+        return false;
     }
 
-
     public synchronized String removeTicket() {
-        if (tickets.isEmpty()) {
-            System.out.println("Cannot remove ticket. Pool is empty.");
-            return null;
-        }
-        String ticket = tickets.poll();
-        System.out.println("Ticket removed: " + ticket + " | Remaining pool size: " + tickets.size() + "/" + maxCapacity);
-        return ticket;
+        return tickets.poll();
     }
 
     public synchronized void clear() {
         tickets.clear();
-        System.out.println("All tickets cleared from the pool.");
     }
 
     public synchronized int getCurrentSize() {

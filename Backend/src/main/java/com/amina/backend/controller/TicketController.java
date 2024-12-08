@@ -2,7 +2,10 @@ package com.amina.backend.controller;
 
 import com.amina.backend.config.TicketConfig;
 import com.amina.backend.service.TicketService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
@@ -36,5 +39,10 @@ public class TicketController {
     public String resetSystem() {
         ticketService.resetSystem();
         return "System reset.";
+    }
+
+    @PostMapping("/status")
+    public String getSystemStatus() {
+        return ticketService.getSummary();
     }
 }
