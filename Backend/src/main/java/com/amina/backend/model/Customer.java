@@ -14,15 +14,13 @@ public class Customer implements Runnable {
     public void run() {
         try {
             while (ticketService.isSystemRunning()) {
-                // Randomly attempt to purchase a ticket
                 if (!ticketService.purchaseTicket("Customer-" + customerId)) {
-                    Thread.sleep(500); // Wait if pool is empty
+                    Thread.sleep(500); // Wait briefly if no tickets are available
                 }
-                // Random delay between ticket purchases
-                Thread.sleep((long) (Math.random() * 1000));
+                Thread.sleep((long) (Math.random() * 1000)); // Simulate random intervals
             }
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            Thread.currentThread().interrupt(); // Handle interruption
         }
     }
 }

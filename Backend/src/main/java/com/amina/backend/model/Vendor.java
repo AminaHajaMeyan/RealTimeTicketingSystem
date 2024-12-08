@@ -15,15 +15,13 @@ public class Vendor implements Runnable {
     public void run() {
         try {
             while (ticketService.isSystemRunning()) {
-                // Randomly add a ticket
                 if (!ticketService.addTicket("Vendor-" + vendorId)) {
-                    Thread.sleep(500); // Wait if pool is full
+                    Thread.sleep(500); // Wait briefly if the pool is full
                 }
-                // Random delay between ticket additions
-                Thread.sleep((long) (Math.random() * 1000));
+                Thread.sleep((long) (Math.random() * 1000)); // Simulate random intervals
             }
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            Thread.currentThread().interrupt(); // Handle interruption
         }
     }
 }
