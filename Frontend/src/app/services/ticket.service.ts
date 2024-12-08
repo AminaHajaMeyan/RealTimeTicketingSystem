@@ -15,7 +15,7 @@ export class TicketService {
   }
 
   startSystem(): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/start`, {});
+    return this.http.post<void>(`${this.baseUrl}//start`, {});
   }
 
   stopSystem(): Observable<void> {
