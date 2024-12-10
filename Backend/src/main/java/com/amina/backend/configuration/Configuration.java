@@ -41,3 +41,4 @@ public class Configuration {
     public Integer getCustomerRetrievalRate() { return customerRetrievalRate; }
     public void setCustomerRetrievalRate(Integer customerRetrievalRate) { this.customerRetrievalRate = customerRetrievalRate; }
 }
+

@@ -43,3 +43,4 @@ public class ConfigurationManager {
                 config.getCustomerRetrievalRate());
     }
 }
+

@@ -1,5 +1,6 @@
 package com.amina.backend.ticket;
 
+import com.amina.backend.websocket.ActivityWebSocketHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +20,16 @@ public class TicketPool {
     private final List<String> waitingVendors = new ArrayList<>();
     private final List<String> waitingCustomers = new ArrayList<>();
 
+    private final ActivityWebSocketHandler webSocketHandler;
+
     public TicketPool(
             @Value("${max.ticket.capacity:50}") int maxTicketCapacity,
-            @Value("${total.tickets:200}") int totalTickets
+            @Value("${total.tickets:200}") int totalTickets,
+            ActivityWebSocketHandler webSocketHandler
     ) {
         this.maxTicketCapacity = maxTicketCapacity;
         this.totalTickets = totalTickets;
+        this.webSocketHandler = webSocketHandler;
 
         if (maxTicketCapacity <= 0 || totalTickets <= 0) {
             throw new IllegalArgumentException("Capacity and total tickets must be greater than zero.");
@@ -58,8 +63,13 @@ public class TicketPool {
 
         tickets.add(ticket);
         ticketsAddedToPool++;
-        System.out.printf("[Vendor-%d] Added Ticket[ID=%d, Seat='%s', Event='%s']. Current pool size: %d/%d%n",
+        String message = String.format("[Vendor-%d] Added Ticket[ID=%d, Seat='%s', Event='%s']. Current pool size: %d/%d",
                 vendorId, ticket.getTicketId(), ticket.getSeatNumber(), ticket.getEventName(), tickets.size(), maxTicketCapacity);
+        System.out.println(message);
+
+        // Broadcast via WebSocket
+        webSocketHandler.broadcastMessage(message);
+
         notifyAll();
     }
 
@@ -86,18 +96,24 @@ public class TicketPool {
 
         Ticket ticket = tickets.remove(0);
         totalTicketsSold++;
-        System.out.printf("[Customer-%d] Purchased: Ticket[ID=%d, Seat='%s', Event='%s']. Total Tickets Sold: %d/%d%n",
+        String message = String.format("[Customer-%d] Purchased: Ticket[ID=%d, Seat='%s', Event='%s']. Total Tickets Sold: %d/%d",
                 customerId, ticket.getTicketId(), ticket.getSeatNumber(), ticket.getEventName(), totalTicketsSold, totalTickets);
+        System.out.println(message);
+
+        // Broadcast via WebSocket
+        webSocketHandler.broadcastMessage(message);
 
         if (totalTicketsSold >= totalTickets) {
             System.out.println("\n[System] All tickets sold! Terminating system...\n");
             isTerminated = true;
+
+            // Notify WebSocket clients
+            webSocketHandler.broadcastMessage("[System] All tickets sold! Terminating system.");
         }
 
         notifyAll();
         return ticket;
     }
-
 
     public synchronized boolean isTerminated() {
         return isTerminated;
@@ -117,7 +133,7 @@ public class TicketPool {
                 : "[System] All tickets sold!";
         int remainingTickets = totalTickets - ticketsAddedToPool;
 
-        return String.format("\n=== System Summary ===\n" +
+        String summary = String.format("\n=== System Summary ===\n" +
                         "%s\n" +
                         "Total Tickets Sold: %d\n" +
                         "Total Customers Served: %d\n" +
@@ -125,6 +141,11 @@ public class TicketPool {
                         "Remaining Tickets (not added to pool): %d\n" +
                         "=========================\n",
                 statusMessage, totalTicketsSold, totalTicketsSold, tickets.size(), remainingTickets);
+
+        // Broadcast summary via WebSocket
+        webSocketHandler.broadcastMessage(summary);
+
+        return summary;
     }
 
     public synchronized void stopSystem() {
@@ -132,6 +153,9 @@ public class TicketPool {
             isTerminated = true;
             notifyAll(); // Wake up waiting threads
             System.out.println("[System] Manual stop triggered.");
+
+            // Notify WebSocket clients
+            webSocketHandler.broadcastMessage("[System] Manual stop triggered.");
         }
     }
 }

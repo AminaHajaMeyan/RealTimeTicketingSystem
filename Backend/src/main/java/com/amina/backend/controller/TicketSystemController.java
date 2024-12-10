@@ -5,6 +5,7 @@ import com.amina.backend.configuration.ConfigurationManager;
 import com.amina.backend.ticket.TicketPool;
 import com.amina.backend.user.Customer;
 import com.amina.backend.user.Vendor;
+import com.amina.backend.websocket.ActivityWebSocketHandler;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,36 +17,38 @@ import java.util.List;
 @RequestMapping("/ticket-system")
 public class TicketSystemController {
     private final ConfigurationManager configManager;
+    private final ActivityWebSocketHandler webSocketHandler;
     private TicketPool ticketPool;
     private final List<Thread> vendorThreads = new ArrayList<>();
     private final List<Thread> customerThreads = new ArrayList<>();
 
-    public TicketSystemController(ConfigurationManager configManager) {
+    public TicketSystemController(ConfigurationManager configManager, ActivityWebSocketHandler webSocketHandler) {
         this.configManager = configManager;
+        this.webSocketHandler = webSocketHandler;
     }
 
     @PostMapping("/configure")
+    public ResponseEntity<String> configureSystem(@RequestBody @Valid Configuration config) {
+        if (config.getTotalTickets() < config.getMaxTicketCapacity()) {
+            return ResponseEntity.badRequest().body("Total tickets must be greater than or equal to max ticket capacity.");
+        }
 
-    public ResponseEntity<String> configureSystem (@RequestBody @Valid Configuration config){
-            if (config.getTotalTickets() < config.getMaxTicketCapacity()) {
-                return ResponseEntity.badRequest().body("Total tickets must be greater than or equal to max ticket capacity.");
-            }
-        // Validate that ticketReleaseRate does not exceed maxTicketCapacity
         if (config.getTicketReleaseRate() > config.getMaxTicketCapacity()) {
             return ResponseEntity.badRequest().body("Ticket release rate must not exceed the maximum ticket capacity.");
         }
 
-        // Validate that customerRetrievalRate does not exceed maxTicketCapacity
         if (config.getCustomerRetrievalRate() > config.getMaxTicketCapacity()) {
             return ResponseEntity.badRequest().body("Customer retrieval rate must not exceed the maximum ticket capacity.");
         }
 
-            configManager.saveConfig(config);
-            configManager.printConfigSummary(config);
-            this.ticketPool = new TicketPool(config.getMaxTicketCapacity(), config.getTotalTickets());
-            return ResponseEntity.ok("System configured and saved.");
-        }
+        configManager.saveConfig(config);
+        configManager.printConfigSummary(config);
 
+        // Pass the WebSocket handler to TicketPool
+        this.ticketPool = new TicketPool(config.getMaxTicketCapacity(), config.getTotalTickets(), webSocketHandler);
+
+        return ResponseEntity.ok("System configured and saved.");
+    }
 
     @PostMapping("/start")
     public String startSystem() {
@@ -74,7 +77,7 @@ public class TicketSystemController {
             customerThread.start();
         }
 
-        // Wait for system termination
+        // Monitor the system for termination
         new Thread(() -> {
             while (!ticketPool.isTerminated()) {
                 try {
@@ -85,17 +88,17 @@ public class TicketSystemController {
                 }
             }
 
-            // Interrupt all threads once system is terminated
+            // Stop all threads when the system terminates
             stopAllThreads();
 
-            // Print final summary
-            System.out.println(ticketPool.generateSummary(false)); // Pass 'false' for natural termination
+            // Print final summary and notify WebSocket clients
+            String summary = ticketPool.generateSummary(false); // Pass 'false' for natural termination
+            System.out.println(summary);
+            webSocketHandler.broadcastMessage(summary);
         }).start();
 
         return "System started with " + vendors + " vendors and " + customers + " customers.";
     }
-
-
 
     @PostMapping("/stop")
     public String stopSystem() {
@@ -103,18 +106,12 @@ public class TicketSystemController {
             return "System not started or already stopped.";
         }
 
-        // Stop the system and generate the summary
+        // Stop the system and broadcast a message
         ticketPool.stopSystem();
-       // stopAllThreads();
-
-        // Print summary after stopping
-        //String summary = ticketPool.generateSummary(true);
-       // System.out.println(summary);
+        webSocketHandler.broadcastMessage("[System] Manual stop triggered.");
 
         return "System stopped manually.";
     }
-
-
 
     @GetMapping("/status")
     public String getSystemStatus() {
@@ -127,11 +124,12 @@ public class TicketSystemController {
                 "\nTickets in Pool: " + ticketPool.getTicketsInPool() +
                 "\nSystem Terminated: " + ticketPool.isTerminated();
     }
+
     private void stopAllThreads() {
         List<String> interruptedVendors = new ArrayList<>();
         List<String> interruptedCustomers = new ArrayList<>();
 
-        // Interrupt vendor threads and group them
+        // Interrupt vendor threads
         for (Thread thread : vendorThreads) {
             if (thread.getName().startsWith("Vendor")) {
                 interruptedVendors.add(thread.getName());
@@ -139,7 +137,7 @@ public class TicketSystemController {
             }
         }
 
-        // Interrupt customer threads and group them
+        // Interrupt customer threads
         for (Thread thread : customerThreads) {
             if (thread.getName().startsWith("Customer")) {
                 interruptedCustomers.add(thread.getName());
@@ -149,6 +147,5 @@ public class TicketSystemController {
 
         vendorThreads.clear();
         customerThreads.clear();
-
     }
 }
