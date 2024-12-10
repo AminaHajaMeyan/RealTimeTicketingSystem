@@ -10,7 +10,7 @@ import { HeaderComponent } from '../header/header.component';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule,HeaderComponent],
+  imports: [CommonModule, FormsModule, HttpClientModule],
 })
 export class FormComponent {
   config: Configuration = {
