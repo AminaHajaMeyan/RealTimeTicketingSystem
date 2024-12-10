@@ -86,3 +86,23 @@ button:disabled {
 button:hover {
   background-color: #034a2e; /* Darker green on hover */
 }
+/* Reset Button */
+.reset-button {
+  background-color: #d9534f; /* Red background */
+  color: white; /* White text */
+  border: none;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px; /* Add spacing */
+}
+
+.reset-button:hover {
+  background-color: #c9302c; /* Darker red on hover */
+}
+
+.reset-button:disabled {
+  background-color: #ccc; /* Gray when disabled */
+  cursor: not-allowed;
+}
