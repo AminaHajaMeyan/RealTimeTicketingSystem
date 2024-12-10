@@ -1,61 +1,84 @@
-<div class="form-container">
-  <form>
-    <h2>Configuration Settings</h2>
+<div class="container">
+  <!-- Form Section -->
+  <div class="form-section">
+    <form #configForm="ngForm">
+      <h2>Configuration Settings</h2>
 
-    <label for="totalTickets">Total Tickets:</label>
-    <input
-      type="number"
-      [(ngModel)]="config.totalTickets"
-      id="totalTickets"
-      name="totalTickets"
-      min="1"
-      required
-    />
-    <div *ngIf="config.totalTickets && config.maxTicketCapacity && config.totalTickets < config.maxTicketCapacity" class="error">
-      Total Tickets must be greater than or equal to Max Ticket Capacity.
-    </div>
+      <div class="form-group">
+        <label for="totalTickets">Total Tickets:</label>
+        <input
+          type="number"
+          [(ngModel)]="config.totalTickets"
+          id="totalTickets"
+          name="totalTickets"
+          min="1"
+          required
+          #totalTickets="ngModel"
+        />
+        <div *ngIf="totalTickets.invalid && totalTickets.touched" class="error">
+          Total Tickets is required and must be at least 1.
+        </div>
+      </div>
 
-    <label for="maxCapacity">Max Ticket Capacity:</label>
-    <input
-      type="number"
-      [(ngModel)]="config.maxTicketCapacity"
-      id="maxCapacity"
-      name="maxTicketCapacity"
-      min="1"
-      required
-    />
+      <div class="form-group">
+        <label for="maxCapacity">Max Ticket Capacity:</label>
+        <input
+          type="number"
+          [(ngModel)]="config.maxTicketCapacity"
+          id="maxCapacity"
+          name="maxTicketCapacity"
+          min="1"
+          required
+          #maxCapacity="ngModel"
+        />
+        <div *ngIf="maxCapacity.invalid && maxCapacity.touched" class="error">
+          Max Ticket Capacity is required and must be at least 1.
+        </div>
+      </div>
 
-    <label for="releaseRate">Ticket Release Rate:</label>
-    <input
-      type="number"
-      [(ngModel)]="config.ticketReleaseRate"
-      id="releaseRate"
-      name="ticketReleaseRate"
-      min="1"
-      required
-    />
-    <div *ngIf="config.ticketReleaseRate && config.maxTicketCapacity && config.ticketReleaseRate > config.maxTicketCapacity" class="error">
-      Ticket Release Rate must not exceed Max Ticket Capacity.
-    </div>
+      <div class="form-group">
+        <label for="releaseRate">Ticket Release Rate:</label>
+        <input
+          type="number"
+          [(ngModel)]="config.ticketReleaseRate"
+          id="releaseRate"
+          name="ticketReleaseRate"
+          min="1"
+          required
+          #ticketReleaseRate="ngModel"
+        />
+        <div *ngIf="ticketReleaseRate.invalid && ticketReleaseRate.touched" class="error">
+          Ticket Release Rate is required and must be at least 1.
+        </div>
+      </div>
 
-    <label for="retrievalRate">Customer Retrieval Rate:</label>
-    <input
-      type="number"
-      [(ngModel)]="config.customerRetrievalRate"
-      id="retrievalRate"
-      name="customerRetrievalRate"
-      min="1"
-      required
-    />
-    <div *ngIf="config.customerRetrievalRate && config.maxTicketCapacity && config.customerRetrievalRate > config.maxTicketCapacity" class="error">
-      Customer Retrieval Rate must not exceed Max Ticket Capacity.
-    </div>
+      <div class="form-group">
+        <label for="retrievalRate">Customer Retrieval Rate:</label>
+        <input
+          type="number"
+          [(ngModel)]="config.customerRetrievalRate"
+          id="retrievalRate"
+          name="customerRetrievalRate"
+          min="1"
+          required
+          #retrievalRate="ngModel"
+        />
+        <div *ngIf="retrievalRate.invalid && retrievalRate.touched" class="error">
+          Customer Retrieval Rate is required and must be at least 1.
+        </div>
+      </div>
 
-    <button (click)="configureSystem()" [disabled]="isLoading">Configure</button>
-  </form>
-
-  <div class="controls">
-    <button (click)="startSystem()">Start</button>
-    <button (click)="stopSystem()">Stop</button>
+      <div class="form-actions">
+        <button (click)="configureSystem()" [disabled]="configForm.invalid || isLoading">
+          Configure
+        </button>
+        <button type="button" (click)="startSystem()" [disabled]="configForm.invalid">
+          Start
+        </button>
+        <button type="button" (click)="stopSystem()" [disabled]="configForm.invalid">
+          Stop
+        </button>
+      </div>
+    </form>
   </div>
 </div>

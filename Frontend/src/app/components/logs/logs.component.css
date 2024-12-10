@@ -1,25 +1,64 @@
+/* Main Container for Activity Log */
+.activity-container {
+  width: 700px; /* Fixed width for the container */
+  height: 600px; /* Fixed height for the container */
+  background-color: #ffffff; /* White background */
+  border: 1px solid #ddd; /* Light border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Inner padding */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  overflow: hidden; /* Prevent resizing due to overflow content */
+  display: flex; /* Flexbox for aligning content */
+  flex-direction: column; /* Arrange title and logs vertically */
+  justify-content: flex-start; /* Align content to the top */
+  box-sizing: border-box; /* Include padding in width/height */
+}
 
+/* Activity Log Content */
 .activity-log {
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 10px;
-  max-height: 500px;
-  overflow-y: auto;
-  background-color: #f1f1f1;
+  flex: 1; /* Allow the log to expand and fill available space */
+  overflow-y: auto; /* Scrollable content for long logs */
 }
 
 .activity-log h3 {
-  color: #045a46;
-  margin-bottom: 10px;
+  color: #045a46; /* Green color for the title */
+  font-size: 1.4rem; /* Increase font size */
+  margin-bottom: 15px; /* Add spacing below the title */
+  text-align: center; /* Center the title */
+  font-weight: bold; /* Make the title bold */
 }
 
 .activity-log ul {
-  list-style-type: none;
-  padding: 0;
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove extra padding */
+  margin: 0; /* Remove extra margin */
 }
 
 .activity-log li {
-  font-size: 14px;
-  margin-bottom: 5px;
-  color: #333;
+  height: 50px; /* Fixed height for log entries */
+  display: flex; /* Center content horizontally and vertically */
+  align-items: center; /* Vertically center the text */
+  justify-content: center; /* Horizontally center the text */
+  font-size: 14px; /* Standard font size */
+  margin-bottom: 10px; /* Add space between logs */
+  padding: 5px; /* Add some inner spacing */
+  background-color: #f9f9f9; /* Light gray background */
+  border-left: 4px solid #045a46; /* Green accent on the left */
+  color: #333; /* Darker text for readability */
+  border-radius: 5px; /* Rounded corners for log entries */
+  overflow: hidden; /* Prevent overflowing content */
+}
+
+/* Scrollbar Styling */
+.activity-log::-webkit-scrollbar {
+  width: 8px;
+}
+
+.activity-log::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.activity-log::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
 }

@@ -12,3 +12,14 @@
   color: #027c5f;
   margin-bottom: 10px;
 }
+.header-container {
+  background-color: #045a46; /* Set a vibrant green background color */
+  color: white; /* Text color to contrast with the background */
+  padding: 20px; /* Add padding for a spacious look */
+  text-align: center; /* Center the header text */
+  font-size: 24px; /* Increase the font size */
+  font-weight: bold; /* Make the text bold */
+  border-radius: 8px; /* Round the corners of the header */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+}
+

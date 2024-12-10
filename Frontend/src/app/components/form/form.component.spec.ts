@@ -25,7 +25,7 @@ describe('FormComponent', () => {
   });
 
   it('should validate configuration inputs correctly', () => {
-    component.config.totalTickets = 100;
+    component.config.totalTickets = 100; // Use valid numbers
     component.config.maxTicketCapacity = 50;
 
     expect(component.config.totalTickets).toBeGreaterThanOrEqual(component.config.maxTicketCapacity);
@@ -33,7 +33,7 @@ describe('FormComponent', () => {
 
   it('should call configureSystem on button click', () => {
     spyOn(component, 'configureSystem');
-    const button = fixture.debugElement.nativeElement.querySelector('button');
+    const button = fixture.debugElement.nativeElement.querySelector('#configure-btn');
     button.click();
     expect(component.configureSystem).toHaveBeenCalled();
   });
