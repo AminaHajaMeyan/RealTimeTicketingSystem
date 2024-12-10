@@ -4,6 +4,7 @@ import { FormComponent } from './components/form/form.component';
 import { LogsComponent } from './components/logs/logs.component';
 import { HttpClientModule } from '@angular/common/http';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,

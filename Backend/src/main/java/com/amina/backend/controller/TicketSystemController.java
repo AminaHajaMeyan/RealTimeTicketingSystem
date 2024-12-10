@@ -125,6 +125,24 @@ public class TicketSystemController {
                 "\nSystem Terminated: " + ticketPool.isTerminated();
     }
 
+    @PostMapping("/reset")
+    public String resetSystem() {
+        if (ticketPool == null) {
+            return "System is not initialized or already reset.";
+        }
+
+        // Stop all threads and clear thread lists
+        stopAllThreads();
+
+        // Clear ticket pool and other configurations
+        ticketPool = null;
+        configManager.clearConfig();
+        webSocketHandler.broadcastMessage("[System] Reset triggered.");
+
+        return "System has been reset to its initial state.";
+    }
+
+
     private void stopAllThreads() {
         List<String> interruptedVendors = new ArrayList<>();
         List<String> interruptedCustomers = new ArrayList<>();

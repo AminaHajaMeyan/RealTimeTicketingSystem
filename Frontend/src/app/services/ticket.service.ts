@@ -37,6 +37,11 @@ export class TicketService {
     return this.http.post(`${this.baseUrl}/stop`, {}, { responseType: 'text' });
   }
 
+  resetSystem(): Observable<any> {
+    return this.http.post(`${this.baseUrl}/reset`, {}, { responseType: 'text' });
+  }
+
+
 
   connectToWebSocket(): WebSocket {
     return new WebSocket('ws://localhost:8080/live-updates');

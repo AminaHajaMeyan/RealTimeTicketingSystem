@@ -42,5 +42,18 @@ public class ConfigurationManager {
                 config.getTicketReleaseRate(),
                 config.getCustomerRetrievalRate());
     }
+    public void clearConfig() {
+        File configFile = new File(CONFIG_FILE);
+        if (configFile.exists()) {
+            if (configFile.delete()) {
+                System.out.println("Configuration file deleted successfully.");
+            } else {
+                System.err.println("Failed to delete configuration file.");
+            }
+        } else {
+            System.out.println("No configuration file to delete.");
+        }
+    }
+
 }
 

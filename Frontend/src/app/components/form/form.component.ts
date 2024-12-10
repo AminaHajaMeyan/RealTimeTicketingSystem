@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Configuration, TicketService } from '../../services/ticket.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from '../header/header.component';
+import { ResetService } from '../../services/reset.service';
 
 @Component({
   selector: 'app-form',
@@ -19,11 +20,13 @@ export class FormComponent {
     ticketReleaseRate: null,
     customerRetrievalRate: null,
   };
+
+
   logs: string[] = [];
 
   isLoading = false; // For showing loading state
 
-  constructor(private ticketService: TicketService) {}
+  constructor(private ticketService: TicketService, private resetService: ResetService) {}
 
   private validateConfig(): boolean {
     if (
@@ -77,7 +80,10 @@ export class FormComponent {
       next: () => alert('System started successfully!'),
       error: (error) => alert(`Failed to start system: ${error.message}`),
     });
+
   }
+
+
 
   stopSystem(): void {
     this.isLoading = true;
@@ -92,4 +98,23 @@ export class FormComponent {
       },
     });
   }
+
+  resetSystem(): void {
+    this.ticketService.resetSystem().subscribe({
+      next: () => {
+        this.config = {
+          totalTickets: null,
+          maxTicketCapacity: null,
+          ticketReleaseRate: null,
+          customerRetrievalRate: null,
+        };
+        this.resetService.triggerReset(); // Notify other components about the reset
+        alert('System reset successfully!');
+      },
+      error: (error) => {
+        alert(`Failed to reset system: ${error.message}`);
+      },
+    });
+  }
 }
+

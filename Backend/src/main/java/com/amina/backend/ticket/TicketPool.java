@@ -155,7 +155,7 @@ public class TicketPool {
             System.out.println("[System] Manual stop triggered.");
 
             // Notify WebSocket clients
-            webSocketHandler.broadcastMessage("[System] Manual stop triggered.");
+            //webSocketHandler.broadcastMessage("[System] Manual stop triggered.");
         }
     }
 }
