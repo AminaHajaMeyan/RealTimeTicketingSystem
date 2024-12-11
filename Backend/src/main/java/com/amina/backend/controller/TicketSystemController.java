@@ -88,16 +88,16 @@ public class TicketSystemController {
     }
 
     @PostMapping("/reset")
-    public ResponseEntity<String> resetSystem() {
-        if (isRunning) {
-            stopSystem(); // Stop the system before resetting
+    public String resetSystem() {
+        if (ticketPool == null) {
+            return "System is not initialized or already reset.";
         }
 
+        stopAllThreads();
         ticketPool = null;
         webSocketHandler.broadcastMessage("[System] Reset triggered. System is ready for reconfiguration.");
-        isRunning = false;
 
-        return ResponseEntity.ok("System runtime state has been reset. Configuration remains intact.");
+        return "System runtime state has been reset. Configuration remains intact.";
     }
 
     @GetMapping("/status")

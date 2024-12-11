@@ -18,11 +18,32 @@ export class LogsComponent implements OnInit, OnDestroy {
   constructor(private ticketService: TicketService, private resetService: ResetService) {}
 
   ngOnInit(): void {
+    this.initializeWebSocket();
+
+    // Listen for reset events
+    this.resetService.reset$.subscribe(() => {
+      this.clearLiveUpdates();
+      console.log('Reset event received. Live updates cleared.');
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.socket) {
+      this.socket.close();
+    }
+  }
+
+  private initializeWebSocket(): void {
     this.socket = this.ticketService.connectToWebSocket();
 
     this.socket.onmessage = (event) => {
       const message = event.data;
-      this.liveUpdates.push(message);
+      console.log('WebSocket Message:', message); // Log WebSocket messages
+      if (message.includes('[System] Reset triggered.')) {
+        this.clearLiveUpdates(); // Handle reset event
+      } else {
+        this.liveUpdates.push(message);
+      }
 
       // Optional: Limit the number of updates displayed
       if (this.liveUpdates.length > 1000) {
@@ -33,19 +54,17 @@ export class LogsComponent implements OnInit, OnDestroy {
     this.socket.onerror = (error) => {
       console.error('WebSocket error:', error);
     };
-    this.resetService.reset$.subscribe(() => this.clearLiveUpdates()); // Listen for reset events
   }
 
-  ngOnDestroy(): void {
-    if (this.socket) {
-      this.socket.close();
-    }
-  }
   clearLiveUpdates(): void {
     this.liveUpdates = [];
     if (this.socket) {
       this.socket.close();
     }
-    alert('Live updates cleared!');
+
+    // Reconnect to WebSocket after reset
+    this.initializeWebSocket();
+
+    alert('Live updates cleared and WebSocket reconnected!');
   }
 }
