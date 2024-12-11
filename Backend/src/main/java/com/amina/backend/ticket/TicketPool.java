@@ -19,25 +19,43 @@ public class TicketPool {
     }
 
     public synchronized boolean addTicket(Ticket ticket, int vendorId) {
-        if (tickets.size() >= maxTicketCapacity) {
-            return false; // Pool is full
+        if (totalTicketsSold + tickets.size() >= totalTickets) {
+            System.out.println("Vendor-" + vendorId + ": Cannot add more tickets. Total tickets limit reached.");
+            return false;
         }
+
+        if (tickets.size() >= maxTicketCapacity) {
+            System.out.println("Vendor-" + vendorId + ": Pool is full. Waiting to add more tickets.");
+            return false;
+        }
+
         tickets.add(ticket);
         notifyAll(); // Notify waiting customers
-        webSocketHandler.broadcastMessage(String.format("Vendor-%d added Ticket %s", vendorId, ticket));
+        webSocketHandler.broadcastMessage(String.format("Vendor-%d added %s", vendorId, ticket));
         return true;
     }
 
+
     public synchronized Ticket removeTicket(int customerId) {
+        if (isTerminated()) {
+            return null; // No more tickets should be sold after termination
+        }
+
         Ticket ticket = tickets.poll();
         if (ticket != null) {
             totalTicketsSold++;
+            if (totalTicketsSold > totalTickets) {
+                totalTicketsSold--; // Revert the increment if it exceeds the limit
+                System.out.println("Error: Total tickets sold exceeds the configured totalTickets.");
+                return null;
+            }
             webSocketHandler.broadcastMessage(String.format(
-                    "Customer-%d purchased and retrieved Ticket %s. Total Tickets Sold: %d/%d",
-                    customerId, ticket, totalTicketsSold, totalTickets));
+                    "Customer-%d successfully retrieved %s. Total Tickets Sold: %d/%d. Remaining Tickets: %d",
+                    customerId, ticket, totalTicketsSold, totalTickets, getRemainingTickets()));
         }
         return ticket;
     }
+
     public synchronized void stopSystem() {
         isTerminated = true;
         notifyAll(); // Notify all waiting threads
@@ -45,9 +63,16 @@ public class TicketPool {
     }
 
     public synchronized boolean isTerminated() {
-        return totalTicketsSold >= totalTickets;
+        if (totalTicketsSold >= totalTickets && tickets.isEmpty()) {
+            isTerminated = true;
+        }
+        return isTerminated;
     }
 
+
+    public synchronized int getRemainingTickets() {
+        return totalTickets - totalTicketsSold;
+    }
 
     public synchronized int getTotalTicketsSold() {
         return totalTicketsSold;
@@ -58,7 +83,8 @@ public class TicketPool {
     }
 
     public synchronized String generateSummary(boolean manuallyStopped) {
-        return String.format("Summary: Total Tickets Sold: %d/%d. System was %s.",
-                totalTicketsSold, totalTickets, manuallyStopped ? "manually stopped" : "naturally terminated");
+        return String.format("Summary: Total Tickets Sold: %d/%d, Tickets Remaining: %d. System was %s.",
+                totalTicketsSold, totalTickets, getRemainingTickets(),
+                manuallyStopped ? "manually stopped" : "naturally terminated");
     }
 }

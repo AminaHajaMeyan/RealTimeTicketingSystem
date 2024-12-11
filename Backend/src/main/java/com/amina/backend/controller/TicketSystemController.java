@@ -80,7 +80,8 @@ public class TicketSystemController {
 
         ticketPool.stopSystem();
         stopAllThreads();
-        webSocketHandler.broadcastMessage("[System] Manual stop triggered.");
+        String summary = ticketPool.generateSummary(true);
+        webSocketHandler.broadcastMessage("[System] Manual stop triggered.\n" + summary);
         isRunning = false;
 
         return ResponseEntity.ok("System stopped successfully.");
