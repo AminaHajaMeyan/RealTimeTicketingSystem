@@ -6,11 +6,35 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Manages the configuration settings for the ticketing system.
+ * <p>
+ * This class provides methods to save, load, print, and clear the configuration settings
+ * stored in a JSON file. It uses the {@link ObjectMapper} for JSON serialization and deserialization.
+ * </p>
+ *
+ * @author Amina
+ * @version 1.0
+ * @since 2024-12-11
+ */
 @Component
 public class ConfigurationManager {
+
+    /**
+     * The name of the configuration file.
+     */
     private static final String CONFIG_FILE = "config.json";
+
+    /**
+     * ObjectMapper instance for handling JSON operations.
+     */
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    /**
+     * Saves the given configuration to a JSON file.
+     *
+     * @param config The {@link Configuration} object to be saved.
+     */
     public void saveConfig(Configuration config) {
         try {
             OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValue(new File(CONFIG_FILE), config);
@@ -20,6 +44,11 @@ public class ConfigurationManager {
         }
     }
 
+    /**
+     * Loads the configuration from the JSON file.
+     *
+     * @return The loaded {@link Configuration} object, or {@code null} if the file is not found or invalid.
+     */
     public Configuration loadConfig() {
         try {
             return OBJECT_MAPPER.readValue(new File(CONFIG_FILE), Configuration.class);
@@ -29,6 +58,11 @@ public class ConfigurationManager {
         }
     }
 
+    /**
+     * Prints a summary of the given configuration to the console.
+     *
+     * @param config The {@link Configuration} object whose summary is to be printed.
+     */
     public void printConfigSummary(Configuration config) {
         System.out.printf("""
                 === Configuration Summary ===
@@ -42,18 +76,4 @@ public class ConfigurationManager {
                 config.getTicketReleaseRate(),
                 config.getCustomerRetrievalRate());
     }
-    public void clearConfig() {
-        File configFile = new File(CONFIG_FILE);
-        if (configFile.exists()) {
-            if (configFile.delete()) {
-                System.out.println("Configuration file deleted successfully.");
-            } else {
-                System.err.println("Failed to delete configuration file.");
-            }
-        } else {
-            System.out.println("No configuration file to delete.");
-        }
-    }
-
 }
-

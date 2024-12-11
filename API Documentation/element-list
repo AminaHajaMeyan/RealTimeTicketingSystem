@@ -1,0 +1,8 @@
+com.amina.backend
+com.amina.backend.appconfig
+com.amina.backend.configuration
+com.amina.backend.controller
+com.amina.backend.exception
+com.amina.backend.ticket
+com.amina.backend.user
+com.amina.backend.websocket

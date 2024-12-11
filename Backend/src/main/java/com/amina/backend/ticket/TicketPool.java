@@ -4,6 +4,17 @@ import com.amina.backend.websocket.ActivityWebSocketHandler;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+/**
+ * Manages the ticketing system, serving as a shared resource for vendors and customers.
+ * <p>
+ * The {@code TicketPool} class implements concurrency control to ensure thread-safe operations
+ * when multiple threads (vendors and customers) interact with the pool.
+ * </p>
+ *
+ * @author Amina
+ * @version 1.0
+ * @since 2024-12-11
+ */
 public class TicketPool {
     private final ConcurrentLinkedQueue<Ticket> tickets = new ConcurrentLinkedQueue<>();
     private final int maxTicketCapacity;
@@ -12,12 +23,26 @@ public class TicketPool {
     private boolean isTerminated = false;
     private final ActivityWebSocketHandler webSocketHandler;
 
+    /**
+     * Constructs a {@code TicketPool} with specified capacity, total tickets, and WebSocket handler.
+     *
+     * @param maxTicketCapacity The maximum capacity of tickets in the pool.
+     * @param totalTickets      The total number of tickets to be sold.
+     * @param webSocketHandler  The WebSocket handler for broadcasting real-time updates.
+     */
     public TicketPool(int maxTicketCapacity, int totalTickets, ActivityWebSocketHandler webSocketHandler) {
         this.maxTicketCapacity = maxTicketCapacity;
         this.totalTickets = totalTickets;
         this.webSocketHandler = webSocketHandler;
     }
 
+    /**
+     * Adds a ticket to the pool if the maximum capacity and total ticket limits are not exceeded.
+     *
+     * @param ticket   The ticket to add.
+     * @param vendorId The ID of the vendor adding the ticket.
+     * @return {@code true} if the ticket was successfully added, {@code false} otherwise.
+     */
     public synchronized boolean addTicket(Ticket ticket, int vendorId) {
         if (totalTicketsSold + tickets.size() >= totalTickets) {
             System.out.println("Vendor-" + vendorId + ": Cannot add more tickets. Total tickets limit reached.");
@@ -35,10 +60,18 @@ public class TicketPool {
         return true;
     }
 
-
+    /**
+     * Removes a ticket from the pool for a customer.
+     * <p>
+     * Updates the total tickets sold and broadcasts the event via WebSocket.
+     * </p>
+     *
+     * @param customerId The ID of the customer retrieving the ticket.
+     * @return The retrieved ticket, or {@code null} if no ticket is available or the system is terminated.
+     */
     public synchronized Ticket removeTicket(int customerId) {
         if (isTerminated()) {
-            return null; // No more tickets should be sold after termination
+            return null;
         }
 
         Ticket ticket = tickets.poll();
@@ -56,12 +89,19 @@ public class TicketPool {
         return ticket;
     }
 
+    /**
+     * Marks the system as terminated, preventing further operations.
+     */
     public synchronized void stopSystem() {
         isTerminated = true;
         notifyAll(); // Notify all waiting threads
-
     }
 
+    /**
+     * Checks if the system is terminated based on the total tickets sold and pool state.
+     *
+     * @return {@code true} if the system is terminated, {@code false} otherwise.
+     */
     public synchronized boolean isTerminated() {
         if (totalTicketsSold >= totalTickets && tickets.isEmpty()) {
             isTerminated = true;
@@ -69,19 +109,40 @@ public class TicketPool {
         return isTerminated;
     }
 
-
+    /**
+     * Gets the number of tickets remaining in the system.
+     *
+     * @return The number of tickets remaining.
+     */
     public synchronized int getRemainingTickets() {
         return totalTickets - totalTicketsSold;
     }
 
+    /**
+     * Gets the total number of tickets sold.
+     *
+     * @return The total tickets sold.
+     */
     public synchronized int getTotalTicketsSold() {
         return totalTicketsSold;
     }
 
+    /**
+     * Gets the number of tickets currently in the pool.
+     *
+     * @return The number of tickets in the pool.
+     */
     public synchronized int getTicketsInPool() {
         return tickets.size();
     }
 
+    /**
+     * Generates a summary of the system's state, including the number of tickets sold,
+     * tickets remaining, and whether the system was stopped manually or naturally.
+     *
+     * @param manuallyStopped {@code true} if the system was manually stopped, {@code false} otherwise.
+     * @return A summary string.
+     */
     public synchronized String generateSummary(boolean manuallyStopped) {
         return String.format("Summary: Total Tickets Sold: %d/%d, Tickets Remaining: %d. System was %s.",
                 totalTicketsSold, totalTickets, getRemainingTickets(),

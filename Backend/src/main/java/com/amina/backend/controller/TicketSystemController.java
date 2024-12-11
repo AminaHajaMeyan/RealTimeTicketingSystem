@@ -13,6 +13,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * REST controller for managing the ticketing system.
+ * <p>
+ * This controller provides endpoints for configuring, starting, stopping, and resetting the system.
+ * It handles the lifecycle of the system and manages vendor and customer threads.
+ * </p>
+ *
+ * @author Amina
+ * @version 1.0
+ * @since 2024-12-11
+ */
 @RestController
 @RequestMapping("/ticket-system")
 public class TicketSystemController {
@@ -21,39 +32,48 @@ public class TicketSystemController {
     private TicketPool ticketPool;
     private final List<Thread> vendorThreads = new ArrayList<>();
     private final List<Thread> customerThreads = new ArrayList<>();
-    private boolean isRunning = false; // New flag to track system state
+    private boolean isRunning = false; // Flag to track system state
 
+    /**
+     * Constructs a new {@code TicketSystemController}.
+     *
+     * @param configManager    The configuration manager.
+     * @param webSocketHandler The WebSocket handler for broadcasting updates.
+     */
     public TicketSystemController(ConfigurationManager configManager, ActivityWebSocketHandler webSocketHandler) {
         this.configManager = configManager;
         this.webSocketHandler = webSocketHandler;
     }
 
+    /**
+     * Configures the system with the provided configuration.
+     *
+     * @param config The configuration to set.
+     * @return A response indicating the result of the operation.
+     */
     @PostMapping("/configure")
     public ResponseEntity<String> configureSystem(@RequestBody @Valid Configuration config) {
         if (isRunning) {
             return ResponseEntity.badRequest().body("System is already running. Stop the system before reconfiguring.");
         }
 
-        if (config.getTotalTickets() <= 0) {
-            return ResponseEntity.badRequest().body("Total tickets must be greater than 0.");
-        }
-
-        if (config.getMaxTicketCapacity() <= 0) {
-            return ResponseEntity.badRequest().body("Max ticket capacity must be greater than 0.");
-        }
-
-        if (config.getTotalTickets() < config.getMaxTicketCapacity()) {
-            return ResponseEntity.badRequest().body("Total tickets must be greater than or equal to max ticket capacity.");
+        if (config.getTotalTickets() <= 0 || config.getMaxTicketCapacity() <= 0 ||
+                config.getTotalTickets() < config.getMaxTicketCapacity()) {
+            return ResponseEntity.badRequest().body("Invalid configuration parameters.");
         }
 
         configManager.saveConfig(config);
         configManager.printConfigSummary(config);
-
         this.ticketPool = new TicketPool(config.getMaxTicketCapacity(), config.getTotalTickets(), webSocketHandler);
 
         return ResponseEntity.ok("System configured successfully.");
     }
 
+    /**
+     * Starts the ticketing system.
+     *
+     * @return A response indicating the result of the operation.
+     */
     @PostMapping("/start")
     public ResponseEntity<String> startSystem() {
         if (ticketPool == null) {
@@ -65,13 +85,17 @@ public class TicketSystemController {
         }
 
         isRunning = true;
-
-        startThreads(); // Default thread counts: 5 vendors, 10 customers
+        startThreads();
         monitorSystemTermination();
 
         return ResponseEntity.ok("System started successfully.");
     }
 
+    /**
+     * Stops the ticketing system manually.
+     *
+     * @return A response indicating the result of the operation.
+     */
     @PostMapping("/stop")
     public ResponseEntity<String> stopSystem() {
         if (!isRunning) {
@@ -87,6 +111,11 @@ public class TicketSystemController {
         return ResponseEntity.ok("System stopped successfully.");
     }
 
+    /**
+     * Resets the runtime state of the system while retaining the configuration.
+     *
+     * @return A response indicating the result of the operation.
+     */
     @PostMapping("/reset")
     public String resetSystem() {
         if (ticketPool == null) {
@@ -100,6 +129,11 @@ public class TicketSystemController {
         return "System runtime state has been reset. Configuration remains intact.";
     }
 
+    /**
+     * Retrieves the current status of the system.
+     *
+     * @return A response with the system status.
+     */
     @GetMapping("/status")
     public ResponseEntity<String> getSystemStatus() {
         if (ticketPool == null) {
@@ -112,6 +146,9 @@ public class TicketSystemController {
                 "\nSystem Terminated: " + ticketPool.isTerminated());
     }
 
+    /**
+     * Starts the vendor and customer threads.
+     */
     private void startThreads() {
         for (int i = 0; i < 5; i++) {
             Vendor vendor = new Vendor(ticketPool, i + 1);
@@ -128,11 +165,14 @@ public class TicketSystemController {
         }
     }
 
+    /**
+     * Monitors the termination of the system and stops threads when necessary.
+     */
     private void monitorSystemTermination() {
         new Thread(() -> {
             try {
                 while (!ticketPool.isTerminated()) {
-                    Thread.sleep(1000); // Check every second
+                    Thread.sleep(1000);
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -148,6 +188,9 @@ public class TicketSystemController {
         }).start();
     }
 
+    /**
+     * Stops all vendor and customer threads.
+     */
     private void stopAllThreads() {
         vendorThreads.forEach(thread -> {
             if (thread.isAlive()) {

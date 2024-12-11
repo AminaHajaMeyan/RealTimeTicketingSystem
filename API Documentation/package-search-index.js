@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.amina.backend"},{"l":"com.amina.backend.appconfig"},{"l":"com.amina.backend.configuration"},{"l":"com.amina.backend.controller"},{"l":"com.amina.backend.exception"},{"l":"com.amina.backend.ticket"},{"l":"com.amina.backend.user"},{"l":"com.amina.backend.websocket"}];updateSearchResults();

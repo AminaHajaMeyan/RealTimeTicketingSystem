@@ -5,17 +5,41 @@ import com.amina.backend.ticket.TicketPool;
 
 import java.util.Random;
 
+/**
+ * Represents a vendor in the ticketing system.
+ * <p>
+ * A {@code Vendor} is responsible for adding tickets to the shared {@code TicketPool}.
+ * Each vendor runs as a separate thread, simulating concurrent ticket producers.
+ * </p>
+ *
+ * @author Amina
+ * @version 1.0
+ * @since 2024-12-11
+ */
 public class Vendor implements Runnable {
     private final TicketPool ticketPool;
     private final int vendorId;
     private final Random random = new Random();
     private static int ticketCounter = 1; // Shared counter for ticket IDs
 
+    /**
+     * Constructs a new {@code Vendor} with the specified {@code TicketPool} and ID.
+     *
+     * @param ticketPool The shared ticket pool.
+     * @param vendorId   The unique ID of the vendor.
+     */
     public Vendor(TicketPool ticketPool, int vendorId) {
         this.ticketPool = ticketPool;
         this.vendorId = vendorId;
     }
 
+    /**
+     * The main logic for the vendor's thread.
+     * <p>
+     * The vendor continuously attempts to add tickets to the pool until the system is terminated
+     * or the thread is interrupted.
+     * </p>
+     */
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted() && !ticketPool.isTerminated()) {
@@ -39,11 +63,9 @@ public class Vendor implements Runnable {
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                //System.out.println("Vendor-" + vendorId + " interrupted.");
+                // Break the loop cleanly on interruption
                 break;
             }
         }
-
-        //System.out.println("Vendor-" + vendorId + " has stopped.");
     }
 }
