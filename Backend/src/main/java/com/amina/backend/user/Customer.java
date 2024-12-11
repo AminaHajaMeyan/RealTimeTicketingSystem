@@ -18,26 +18,32 @@ public class Customer implements Runnable {
     @Override
     public void run() {
         try {
-            Thread.sleep(3000); // Customers start after a 5-second delay
+            // Delay before customers start interacting with the system
+            Thread.sleep(3000); // 3-second delay
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            System.out.println("Customer-" + customerId + " interrupted before starting.");
             return;
         }
 
         while (!Thread.currentThread().isInterrupted() && !ticketPool.isTerminated()) {
             try {
-                if (ticketPool.isTerminated()) {
-                    break;
-                }
-
                 // Simulate ticket retrieval delay
                 Thread.sleep(random.nextInt(2000) + 1000); // 1 to 3 seconds
 
                 Ticket ticket = ticketPool.removeTicket(customerId);
+                if (ticket == null) {
+                    System.out.println("Customer-" + customerId + " attempted to retrieve a ticket but none were available.");
+                } else {
+                    System.out.println("Customer-" + customerId + " successfully retrieved " + ticket);
+                }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                //System.out.println("Customer-" + customerId + " interrupted.");
                 break;
             }
         }
+
+        //System.out.println("Customer-" + customerId + " has stopped.");
     }
 }

@@ -1,5 +1,6 @@
 package com.amina.backend.websocket;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -13,13 +14,13 @@ public class ActivityWebSocketHandler extends TextWebSocketHandler {
     private final CopyOnWriteArrayList<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) {
+    public void afterConnectionEstablished(@NotNull WebSocketSession session) {
         sessions.add(session);
         System.out.println("WebSocket connection established: " + session.getId());
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, org.springframework.web.socket.CloseStatus status) {
+    public void afterConnectionClosed(@NotNull WebSocketSession session, org.springframework.web.socket.CloseStatus status) {
         sessions.remove(session);
         System.out.println("WebSocket connection closed: " + session.getId());
     }

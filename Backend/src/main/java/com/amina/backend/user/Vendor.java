@@ -20,10 +20,6 @@ public class Vendor implements Runnable {
     public void run() {
         while (!Thread.currentThread().isInterrupted() && !ticketPool.isTerminated()) {
             try {
-                if (ticketPool.isTerminated()) {
-                    break;
-                }
-
                 // Simulate ticket creation delay
                 Thread.sleep(random.nextInt(2000) + 1000); // 1 to 3 seconds
 
@@ -31,11 +27,23 @@ public class Vendor implements Runnable {
                 synchronized (Vendor.class) { // Ensure unique ticket IDs
                     ticket = new Ticket(ticketCounter++, "Music Show", ticketCounter);
                 }
-                ticketPool.addTicket(ticket, vendorId);
+
+                boolean added = ticketPool.addTicket(ticket, vendorId);
+                if (!added) {
+                    System.out.println("Vendor-" + vendorId + ": Pool is full. Waiting to add more tickets.");
+                    synchronized (ticketPool) {
+                        ticketPool.wait(1000); // Wait before retrying
+                    }
+                } else {
+                    System.out.println("Vendor-" + vendorId + " added Ticket " + ticket);
+                }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                //System.out.println("Vendor-" + vendorId + " interrupted.");
                 break;
             }
         }
+
+        //System.out.println("Vendor-" + vendorId + " has stopped.");
     }
 }

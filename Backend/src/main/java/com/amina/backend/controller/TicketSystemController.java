@@ -21,6 +21,7 @@ public class TicketSystemController {
     private TicketPool ticketPool;
     private final List<Thread> vendorThreads = new ArrayList<>();
     private final List<Thread> customerThreads = new ArrayList<>();
+    private boolean isRunning = false; // New flag to track system state
 
     public TicketSystemController(ConfigurationManager configManager, ActivityWebSocketHandler webSocketHandler) {
         this.configManager = configManager;
@@ -29,16 +30,20 @@ public class TicketSystemController {
 
     @PostMapping("/configure")
     public ResponseEntity<String> configureSystem(@RequestBody @Valid Configuration config) {
+        if (isRunning) {
+            return ResponseEntity.badRequest().body("System is already running. Stop the system before reconfiguring.");
+        }
+
+        if (config.getTotalTickets() <= 0) {
+            return ResponseEntity.badRequest().body("Total tickets must be greater than 0.");
+        }
+
+        if (config.getMaxTicketCapacity() <= 0) {
+            return ResponseEntity.badRequest().body("Max ticket capacity must be greater than 0.");
+        }
+
         if (config.getTotalTickets() < config.getMaxTicketCapacity()) {
             return ResponseEntity.badRequest().body("Total tickets must be greater than or equal to max ticket capacity.");
-        }
-
-        if (config.getTicketReleaseRate() > config.getMaxTicketCapacity()) {
-            return ResponseEntity.badRequest().body("Ticket release rate must not exceed the maximum ticket capacity.");
-        }
-
-        if (config.getCustomerRetrievalRate() > config.getMaxTicketCapacity()) {
-            return ResponseEntity.badRequest().body("Customer retrieval rate must not exceed the maximum ticket capacity.");
         }
 
         configManager.saveConfig(config);
@@ -50,65 +55,71 @@ public class TicketSystemController {
     }
 
     @PostMapping("/start")
-    public String startSystem() {
+    public ResponseEntity<String> startSystem() {
         if (ticketPool == null) {
-            return "System not configured. Please configure the system before starting.";
+            return ResponseEntity.badRequest().body("System not configured. Please configure the system before starting.");
         }
 
-        startThreads(5, 10); // Default thread counts: 5 vendors, 10 customers
+        if (isRunning) {
+            return ResponseEntity.badRequest().body("System is already running.");
+        }
 
+        isRunning = true;
+
+        startThreads(); // Default thread counts: 5 vendors, 10 customers
         monitorSystemTermination();
 
-        return "System started successfully.";
+        return ResponseEntity.ok("System started successfully.");
     }
 
     @PostMapping("/stop")
-    public String stopSystem() {
-        if (ticketPool == null) {
-            return "System not started or already stopped.";
+    public ResponseEntity<String> stopSystem() {
+        if (!isRunning) {
+            return ResponseEntity.badRequest().body("System is not running.");
         }
 
         ticketPool.stopSystem();
         stopAllThreads();
         webSocketHandler.broadcastMessage("[System] Manual stop triggered.");
+        isRunning = false;
 
-        return "System stopped successfully.";
+        return ResponseEntity.ok("System stopped successfully.");
     }
 
     @PostMapping("/reset")
-    public String resetSystem() {
-        if (ticketPool == null) {
-            return "System is not initialized or already reset.";
+    public ResponseEntity<String> resetSystem() {
+        if (isRunning) {
+            stopSystem(); // Stop the system before resetting
         }
 
-        stopAllThreads();
         ticketPool = null;
         webSocketHandler.broadcastMessage("[System] Reset triggered. System is ready for reconfiguration.");
+        isRunning = false;
 
-        return "System runtime state has been reset. Configuration remains intact.";
+        return ResponseEntity.ok("System runtime state has been reset. Configuration remains intact.");
     }
 
     @GetMapping("/status")
-    public String getSystemStatus() {
+    public ResponseEntity<String> getSystemStatus() {
         if (ticketPool == null) {
-            return "System not configured.";
+            return ResponseEntity.ok("System not configured.");
         }
 
-        return "System Status: " +
+        return ResponseEntity.ok("System Status: " +
                 "\nTickets Sold: " + ticketPool.getTotalTicketsSold() +
                 "\nTickets in Pool: " + ticketPool.getTicketsInPool() +
-                "\nSystem Terminated: " + ticketPool.isTerminated();
+                "\nSystem Terminated: " + ticketPool.isTerminated());
     }
 
-    private void startThreads(int vendorCount, int customerCount) {
-        for (int i = 0; i < vendorCount; i++) {
+    private void startThreads() {
+        for (int i = 0; i < 5; i++) {
             Vendor vendor = new Vendor(ticketPool, i + 1);
             Thread vendorThread = new Thread(vendor, "Vendor-" + (i + 1));
             vendorThreads.add(vendorThread);
             vendorThread.start();
         }
 
-        for (int i = 0; i < customerCount; i++) {
+        for (int i = 0; i < 10; i++) {
             Customer customer = new Customer(ticketPool, i + 1);
             Thread customerThread = new Thread(customer, "Customer-" + (i + 1));
             customerThreads.add(customerThread);
@@ -118,13 +129,12 @@ public class TicketSystemController {
 
     private void monitorSystemTermination() {
         new Thread(() -> {
-            while (!ticketPool.isTerminated()) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
+            try {
+                while (!ticketPool.isTerminated()) {
+                    Thread.sleep(1000); // Check every second
                 }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
 
             stopAllThreads();
@@ -132,12 +142,23 @@ public class TicketSystemController {
             String summary = ticketPool.generateSummary(false);
             System.out.println(summary);
             webSocketHandler.broadcastMessage(summary);
+
+            isRunning = false;
         }).start();
     }
 
     private void stopAllThreads() {
-        vendorThreads.forEach(Thread::interrupt);
-        customerThreads.forEach(Thread::interrupt);
+        vendorThreads.forEach(thread -> {
+            if (thread.isAlive()) {
+                thread.interrupt();
+            }
+        });
+
+        customerThreads.forEach(thread -> {
+            if (thread.isAlive()) {
+                thread.interrupt();
+            }
+        });
 
         vendorThreads.clear();
         customerThreads.clear();
