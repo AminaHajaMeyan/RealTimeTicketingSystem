@@ -49,6 +49,8 @@ A comprehensive real-time ticketing system with a **Backend**, **Frontend**, and
 
 ## Project Structure
 
+The repository is organized into three main components: **Backend**, **Frontend**, and **CLI**.
+
 ---
 
 ## Getting Started
