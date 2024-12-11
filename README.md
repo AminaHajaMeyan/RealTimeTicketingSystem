@@ -53,6 +53,20 @@ The repository is organized into three main components: **Backend**, **Frontend*
 
 ---
 
+### Explanation of Key Directories
+
+- **Backend**:
+  - Contains Spring Boot application for handling API requests, managing ticket pools, and broadcasting WebSocket updates.
+  
+- **Frontend**:
+  - Contains Angular application for user interaction, including real-time updates.
+
+- **CLI**:
+  - Command-line interface for quick interaction with the ticketing system, allowing configurations and real-time updates.
+
+
+---
+
 ## Getting Started
 ### Prerequisites
 
