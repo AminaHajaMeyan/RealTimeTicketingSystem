@@ -3,9 +3,13 @@ package com.amina.backend.user;
 import com.amina.backend.ticket.Ticket;
 import com.amina.backend.ticket.TicketPool;
 
+import java.util.Random;
+
 public class Vendor implements Runnable {
     private final TicketPool ticketPool;
     private final int vendorId;
+    private final Random random = new Random();
+    private static int ticketCounter = 1; // Shared counter for ticket IDs
 
     public Vendor(TicketPool ticketPool, int vendorId) {
         this.ticketPool = ticketPool;
@@ -14,15 +18,24 @@ public class Vendor implements Runnable {
 
     @Override
     public void run() {
-        try {
-            while (!Thread.currentThread().isInterrupted() && !ticketPool.isTerminated()) {
-                Ticket ticket = new Ticket(vendorId, "Seat-" + (int) (Math.random() * 100));
+        while (!Thread.currentThread().isInterrupted() && !ticketPool.isTerminated()) {
+            try {
+                if (ticketPool.isTerminated()) {
+                    break;
+                }
+
+                // Simulate ticket creation delay
+                Thread.sleep(random.nextInt(2000) + 1000); // 1 to 3 seconds
+
+                Ticket ticket;
+                synchronized (Vendor.class) { // Ensure unique ticket IDs
+                    ticket = new Ticket(ticketCounter++, "Music Show", ticketCounter);
+                }
                 ticketPool.addTicket(ticket, vendorId);
-                Thread.sleep(2000); // Simulate vendor activity
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
             }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
         }
     }
 }
-

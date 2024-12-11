@@ -2,11 +2,12 @@ package com.amina.backend.ticket;
 
 public class Ticket {
     private final int ticketId;
-    private final String seatNumber;
-    private final String eventName = "Concert Event";
+    private final String eventName;
+    private final int seatNumber;
 
-    public Ticket(int ticketId, String seatNumber) {
+    public Ticket(int ticketId, String eventName, int seatNumber) {
         this.ticketId = ticketId;
+        this.eventName = eventName;
         this.seatNumber = seatNumber;
     }
 
@@ -14,17 +15,20 @@ public class Ticket {
         return ticketId;
     }
 
-    public String getSeatNumber() {
-        return seatNumber;
-    }
-
     public String getEventName() {
         return eventName;
     }
 
+    public int getSeatNumber() {
+        return seatNumber;
+    }
+
     @Override
     public String toString() {
-        return "Ticket[ID=" + ticketId + ", Seat='" + seatNumber + "', Event='" + eventName + "']";
+        return "Ticket{" +
+                "ticketId=" + ticketId +
+                ", eventName='" + eventName + '\'' +
+                ", seatNumber=" + seatNumber +
+                '}';
     }
 }
-

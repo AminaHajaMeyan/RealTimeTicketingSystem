@@ -44,60 +44,22 @@ public class TicketSystemController {
         configManager.saveConfig(config);
         configManager.printConfigSummary(config);
 
-        // Pass the WebSocket handler to TicketPool
         this.ticketPool = new TicketPool(config.getMaxTicketCapacity(), config.getTotalTickets(), webSocketHandler);
 
-        return ResponseEntity.ok("System configured and saved.");
+        return ResponseEntity.ok("System configured successfully.");
     }
 
     @PostMapping("/start")
     public String startSystem() {
-        int vendors = 5;
-        int customers = 10;
-
         if (ticketPool == null) {
             return "System not configured. Please configure the system before starting.";
         }
 
-        System.out.println("Starting system with " + vendors + " vendors and " + customers + " customers.");
+        startThreads(5, 10); // Default thread counts: 5 vendors, 10 customers
 
-        // Start vendor threads
-        for (int i = 0; i < vendors; i++) {
-            Vendor vendor = new Vendor(ticketPool, i + 1);
-            Thread vendorThread = new Thread(vendor, "Vendor-" + (i + 1));
-            vendorThreads.add(vendorThread);
-            vendorThread.start();
-        }
+        monitorSystemTermination();
 
-        // Start customer threads
-        for (int i = 0; i < customers; i++) {
-            Customer customer = new Customer(ticketPool, i + 1);
-            Thread customerThread = new Thread(customer, "Customer-" + (i + 1));
-            customerThreads.add(customerThread);
-            customerThread.start();
-        }
-
-        // Monitor the system for termination
-        new Thread(() -> {
-            while (!ticketPool.isTerminated()) {
-                try {
-                    Thread.sleep(1000); // Check every second
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
-                }
-            }
-
-            // Stop all threads when the system terminates
-            stopAllThreads();
-
-            // Print final summary and notify WebSocket clients
-            String summary = ticketPool.generateSummary(false); // Pass 'false' for natural termination
-            System.out.println(summary);
-            webSocketHandler.broadcastMessage(summary);
-        }).start();
-
-        return "System started with " + vendors + " vendors and " + customers + " customers.";
+        return "System started successfully.";
     }
 
     @PostMapping("/stop")
@@ -106,11 +68,24 @@ public class TicketSystemController {
             return "System not started or already stopped.";
         }
 
-        // Stop the system and broadcast a message
         ticketPool.stopSystem();
+        stopAllThreads();
         webSocketHandler.broadcastMessage("[System] Manual stop triggered.");
 
-        return "System stopped manually.";
+        return "System stopped successfully.";
+    }
+
+    @PostMapping("/reset")
+    public String resetSystem() {
+        if (ticketPool == null) {
+            return "System is not initialized or already reset.";
+        }
+
+        stopAllThreads();
+        ticketPool = null;
+        webSocketHandler.broadcastMessage("[System] Reset triggered. System is ready for reconfiguration.");
+
+        return "System runtime state has been reset. Configuration remains intact.";
     }
 
     @GetMapping("/status")
@@ -125,43 +100,44 @@ public class TicketSystemController {
                 "\nSystem Terminated: " + ticketPool.isTerminated();
     }
 
-    @PostMapping("/reset")
-    public String resetSystem() {
-        if (ticketPool == null) {
-            return "System is not initialized or already reset.";
+    private void startThreads(int vendorCount, int customerCount) {
+        for (int i = 0; i < vendorCount; i++) {
+            Vendor vendor = new Vendor(ticketPool, i + 1);
+            Thread vendorThread = new Thread(vendor, "Vendor-" + (i + 1));
+            vendorThreads.add(vendorThread);
+            vendorThread.start();
         }
 
-        // Stop all threads and clear thread lists
-        stopAllThreads();
-
-        // Clear ticket pool and other configurations
-        ticketPool = null;
-        configManager.clearConfig();
-        webSocketHandler.broadcastMessage("[System] Reset triggered.");
-
-        return "System has been reset to its initial state.";
+        for (int i = 0; i < customerCount; i++) {
+            Customer customer = new Customer(ticketPool, i + 1);
+            Thread customerThread = new Thread(customer, "Customer-" + (i + 1));
+            customerThreads.add(customerThread);
+            customerThread.start();
+        }
     }
 
+    private void monitorSystemTermination() {
+        new Thread(() -> {
+            while (!ticketPool.isTerminated()) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+
+            stopAllThreads();
+
+            String summary = ticketPool.generateSummary(false);
+            System.out.println(summary);
+            webSocketHandler.broadcastMessage(summary);
+        }).start();
+    }
 
     private void stopAllThreads() {
-        List<String> interruptedVendors = new ArrayList<>();
-        List<String> interruptedCustomers = new ArrayList<>();
-
-        // Interrupt vendor threads
-        for (Thread thread : vendorThreads) {
-            if (thread.getName().startsWith("Vendor")) {
-                interruptedVendors.add(thread.getName());
-                thread.interrupt();
-            }
-        }
-
-        // Interrupt customer threads
-        for (Thread thread : customerThreads) {
-            if (thread.getName().startsWith("Customer")) {
-                interruptedCustomers.add(thread.getName());
-                thread.interrupt();
-            }
-        }
+        vendorThreads.forEach(Thread::interrupt);
+        customerThreads.forEach(Thread::interrupt);
 
         vendorThreads.clear();
         customerThreads.clear();
