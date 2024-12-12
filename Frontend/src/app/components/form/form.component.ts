@@ -106,15 +106,16 @@ export class FormComponent {
           totalTickets: null,
           maxTicketCapacity: null,
           ticketReleaseRate: null,
-          customerRetrievalRate: null,
+          customerRetrievalRate: null
         };
         this.resetService.triggerReset(); // Notify other components about the reset
         alert('System reset successfully!');
       },
       error: (error) => {
         alert(`Failed to reset system: ${error.message}`);
-      },
+      }
     });
   }
+
 }
 

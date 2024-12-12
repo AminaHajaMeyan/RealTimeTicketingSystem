@@ -57,7 +57,9 @@ public class TicketPool {
         tickets.add(ticket);
         notifyAll(); // Notify waiting customers
         webSocketHandler.broadcastMessage(String.format("Vendor-%d added %s", vendorId, ticket));
+        broadcastTicketStatus();
         return true;
+
     }
 
     /**
@@ -85,6 +87,7 @@ public class TicketPool {
             webSocketHandler.broadcastMessage(String.format(
                     "Customer-%d successfully retrieved %s. Total Tickets Sold: %d/%d. Remaining Tickets: %d",
                     customerId, ticket, totalTicketsSold, totalTickets, getRemainingTickets()));
+            broadcastTicketStatus();
         }
         return ticket;
     }
@@ -148,4 +151,24 @@ public class TicketPool {
                 totalTicketsSold, totalTickets, getRemainingTickets(),
                 manuallyStopped ? "manually stopped" : "naturally terminated");
     }
+
+    private void broadcastTicketStatus() {
+        int totalTickets = this.totalTickets;
+        int ticketsSold = this.totalTicketsSold;
+        int remainingTickets = getRemainingTickets();
+        String message = String.format(
+                "{\"totalTickets\": %d, \"ticketsSold\": %d, \"remainingTickets\": %d}",
+                totalTickets, ticketsSold, remainingTickets
+        );
+        webSocketHandler.broadcastMessage(message);
+    }
+    private void broadcastTransactionData(String type, int amount) {
+        String message = String.format(
+                "{\"type\": \"%s\", \"amount\": %d, \"timestamp\": \"%s\"}",
+                type, amount, java.time.Instant.now().toString()
+        );
+        webSocketHandler.broadcastMessage(message); // Broadcast message to WebSocket clients
+    }
+
+
 }

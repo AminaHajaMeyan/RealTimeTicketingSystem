@@ -39,6 +39,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(activityWebSocketHandler, "/live-updates")
-                .setAllowedOrigins("*"); // Allow connections from all origins
+                .setAllowedOrigins("*"); // Adjust origins as needed
     }
 }

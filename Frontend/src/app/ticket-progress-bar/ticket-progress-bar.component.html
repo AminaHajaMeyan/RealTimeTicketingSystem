@@ -1,0 +1,39 @@
+<div
+  style="
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  "
+>
+  <h1 style="text-align: center;">Ticket Pool Status</h1>
+  <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+    <span>Sold Tickets: {{ status.ticketsSold }}</span>
+    <span>Available Tickets: {{ status.remainingTickets }}</span>
+  </div>
+  <div
+    style="
+      height: 20px;
+      background-color: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    "
+  >
+    <div
+      style="
+        height: 100%;
+        background-color: green;
+        transition: width 0.5s ease;
+      "
+      [style.width.%]="progress"
+    ></div>
+  </div>
+  <p style="text-align: center; margin-top: 10px;">
+    {{ progress.toFixed(0) }}% Tickets Sold
+  </p>
+</div>
