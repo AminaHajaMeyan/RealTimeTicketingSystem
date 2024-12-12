@@ -214,3 +214,144 @@
 [2024-12-11 14:25:08] Ticket purchased: Ticket[ID=6, Seat='Seat-6', Event='Concert Event']. Total tickets sold: 9
 [2024-12-11 14:25:08] Ticket purchased: Ticket[ID=10, Seat='Seat-10', Event='Concert Event']. Total tickets sold: 10
 [2024-12-11 14:25:08] All tickets sold! Terminating the system...
+[2024-12-12 08:58:43] System started with configuration: Configuration [Total Tickets: 10, Max Capacity: 5, Release Rate: 2, Retrieval Rate: 1]
+[2024-12-12 08:58:43] Vendor 1 added Ticket[ID=1, Seat='Seat-1', Event='Concert Event']. Current pool size: 1/5
+[2024-12-12 08:58:43] Ticket purchased: Ticket[ID=1, Seat='Seat-1', Event='Concert Event']. Total tickets sold: 1
+[2024-12-12 08:58:43] Vendor 4 added Ticket[ID=4, Seat='Seat-4', Event='Concert Event']. Current pool size: 1/5
+[2024-12-12 08:58:43] Vendor 3 added Ticket[ID=2, Seat='Seat-2', Event='Concert Event']. Current pool size: 2/5
+[2024-12-12 08:58:43] Vendor 5 added Ticket[ID=5, Seat='Seat-5', Event='Concert Event']. Current pool size: 3/5
+[2024-12-12 08:58:43] Vendor 2 added Ticket[ID=3, Seat='Seat-3', Event='Concert Event']. Current pool size: 4/5
+[2024-12-12 08:58:43] Ticket purchased: Ticket[ID=4, Seat='Seat-4', Event='Concert Event']. Total tickets sold: 2
+[2024-12-12 08:58:43] Ticket purchased: Ticket[ID=2, Seat='Seat-2', Event='Concert Event']. Total tickets sold: 3
+[2024-12-12 08:58:43] Ticket purchased: Ticket[ID=5, Seat='Seat-5', Event='Concert Event']. Total tickets sold: 4
+[2024-12-12 08:58:43] Ticket purchased: Ticket[ID=3, Seat='Seat-3', Event='Concert Event']. Total tickets sold: 5
+[2024-12-12 08:58:45] Real-Time Status: Pool Size: 0, Tickets Sold: 5, Remaining Tickets: 5, Waiting Customers: 10, Waiting Vendors: 0
+[2024-12-12 08:58:45] Vendor 3 added Ticket[ID=7, Seat='Seat-7', Event='Concert Event']. Current pool size: 1/5
+[2024-12-12 08:58:45] Vendor 1 added Ticket[ID=6, Seat='Seat-6', Event='Concert Event']. Current pool size: 2/5
+[2024-12-12 08:58:45] Vendor 2 added Ticket[ID=9, Seat='Seat-9', Event='Concert Event']. Current pool size: 3/5
+[2024-12-12 08:58:45] Ticket purchased: Ticket[ID=7, Seat='Seat-7', Event='Concert Event']. Total tickets sold: 6
+[2024-12-12 08:58:45] Ticket purchased: Ticket[ID=6, Seat='Seat-6', Event='Concert Event']. Total tickets sold: 7
+[2024-12-12 08:58:45] Ticket purchased: Ticket[ID=9, Seat='Seat-9', Event='Concert Event']. Total tickets sold: 8
+[2024-12-12 08:58:45] Vendor 5 added Ticket[ID=8, Seat='Seat-8', Event='Concert Event']. Current pool size: 1/5
+[2024-12-12 08:58:45] Ticket purchased: Ticket[ID=8, Seat='Seat-8', Event='Concert Event']. Total tickets sold: 9
+[2024-12-12 08:58:45] Vendor 4 added Ticket[ID=10, Seat='Seat-10', Event='Concert Event']. Current pool size: 1/5
+[2024-12-12 08:58:45] Ticket purchased: Ticket[ID=10, Seat='Seat-10', Event='Concert Event']. Total tickets sold: 10
+[2024-12-12 08:58:45] All tickets sold! Terminating the system...
+[2024-12-12 08:58:47] Real-Time Status: Pool Size: 0, Tickets Sold: 10, Remaining Tickets: 0, Waiting Customers: 0, Waiting Vendors: 0
+[2024-12-12 09:00:27] Stop command received. Terminating the system...
+[2024-12-12 09:00:27] Final Status: Real-Time Status: Pool Size: 0, Tickets Sold: 10, Remaining Tickets: 0, Waiting Customers: 0, Waiting Vendors: 0
+[2024-12-12 09:00:27] All threads stopped. System terminated gracefully.
+[2024-12-12 09:07:58] System started with configuration: Configuration [Total Tickets: 50, Max Capacity: 20, Release Rate: 10, Retrieval Rate: 15]
+[2024-12-12 09:07:58] Vendor 1 added Ticket[ID=1, Seat='Seat-1', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:07:58] Ticket purchased: Ticket[ID=1, Seat='Seat-1', Event='Concert Event']. Total tickets sold: 1
+[2024-12-12 09:07:58] Vendor 2 added Ticket[ID=2, Seat='Seat-2', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:07:58] Vendor 3 added Ticket[ID=3, Seat='Seat-3', Event='Concert Event']. Current pool size: 2/20
+[2024-12-12 09:07:58] Vendor 4 added Ticket[ID=4, Seat='Seat-4', Event='Concert Event']. Current pool size: 3/20
+[2024-12-12 09:07:58] Vendor 5 added Ticket[ID=5, Seat='Seat-5', Event='Concert Event']. Current pool size: 4/20
+[2024-12-12 09:07:58] Ticket purchased: Ticket[ID=2, Seat='Seat-2', Event='Concert Event']. Total tickets sold: 2
+[2024-12-12 09:07:58] Ticket purchased: Ticket[ID=3, Seat='Seat-3', Event='Concert Event']. Total tickets sold: 3
+[2024-12-12 09:07:58] Ticket purchased: Ticket[ID=4, Seat='Seat-4', Event='Concert Event']. Total tickets sold: 4
+[2024-12-12 09:07:58] Ticket purchased: Ticket[ID=5, Seat='Seat-5', Event='Concert Event']. Total tickets sold: 5
+[2024-12-12 09:08:00] Vendor 5 added Ticket[ID=7, Seat='Seat-7', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:00] Real-Time Status: Pool Size: 0, Tickets Sold: 5, Remaining Tickets: 45, Waiting Customers: 10, Waiting Vendors: 0
+[2024-12-12 09:08:00] Vendor 3 added Ticket[ID=6, Seat='Seat-6', Event='Concert Event']. Current pool size: 2/20
+[2024-12-12 09:08:00] Vendor 1 added Ticket[ID=9, Seat='Seat-9', Event='Concert Event']. Current pool size: 3/20
+[2024-12-12 09:08:00] Ticket purchased: Ticket[ID=7, Seat='Seat-7', Event='Concert Event']. Total tickets sold: 6
+[2024-12-12 09:08:00] Ticket purchased: Ticket[ID=6, Seat='Seat-6', Event='Concert Event']. Total tickets sold: 7
+[2024-12-12 09:08:00] Ticket purchased: Ticket[ID=9, Seat='Seat-9', Event='Concert Event']. Total tickets sold: 8
+[2024-12-12 09:08:00] Vendor 4 added Ticket[ID=8, Seat='Seat-8', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:00] Ticket purchased: Ticket[ID=8, Seat='Seat-8', Event='Concert Event']. Total tickets sold: 9
+[2024-12-12 09:08:00] Vendor 2 added Ticket[ID=10, Seat='Seat-10', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:00] Ticket purchased: Ticket[ID=10, Seat='Seat-10', Event='Concert Event']. Total tickets sold: 10
+[2024-12-12 09:08:02] Vendor 5 added Ticket[ID=11, Seat='Seat-11', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:02] Ticket purchased: Ticket[ID=11, Seat='Seat-11', Event='Concert Event']. Total tickets sold: 11
+[2024-12-12 09:08:02] Vendor 4 added Ticket[ID=12, Seat='Seat-12', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:02] Ticket purchased: Ticket[ID=12, Seat='Seat-12', Event='Concert Event']. Total tickets sold: 12
+[2024-12-12 09:08:02] Real-Time Status: Pool Size: 0, Tickets Sold: 12, Remaining Tickets: 38, Waiting Customers: 9, Waiting Vendors: 0
+[2024-12-12 09:08:02] Vendor 1 added Ticket[ID=14, Seat='Seat-14', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:02] Ticket purchased: Ticket[ID=14, Seat='Seat-14', Event='Concert Event']. Total tickets sold: 13
+[2024-12-12 09:08:02] Vendor 3 added Ticket[ID=13, Seat='Seat-13', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:02] Ticket purchased: Ticket[ID=13, Seat='Seat-13', Event='Concert Event']. Total tickets sold: 14
+[2024-12-12 09:08:02] Vendor 2 added Ticket[ID=15, Seat='Seat-15', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:02] Ticket purchased: Ticket[ID=15, Seat='Seat-15', Event='Concert Event']. Total tickets sold: 15
+[2024-12-12 09:08:04] Vendor 5 added Ticket[ID=16, Seat='Seat-16', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:04] Ticket purchased: Ticket[ID=16, Seat='Seat-16', Event='Concert Event']. Total tickets sold: 16
+[2024-12-12 09:08:04] 10 customers and 0 vendors are currently waiting.
+[2024-12-12 09:08:04] Vendor 4 added Ticket[ID=17, Seat='Seat-17', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:04] Ticket purchased: Ticket[ID=17, Seat='Seat-17', Event='Concert Event']. Total tickets sold: 17
+[2024-12-12 09:08:04] Vendor 1 added Ticket[ID=18, Seat='Seat-18', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:04] Ticket purchased: Ticket[ID=18, Seat='Seat-18', Event='Concert Event']. Total tickets sold: 18
+[2024-12-12 09:08:04] Vendor 3 added Ticket[ID=19, Seat='Seat-19', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:04] Ticket purchased: Ticket[ID=19, Seat='Seat-19', Event='Concert Event']. Total tickets sold: 19
+[2024-12-12 09:08:04] Vendor 2 added Ticket[ID=20, Seat='Seat-20', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:04] Ticket purchased: Ticket[ID=20, Seat='Seat-20', Event='Concert Event']. Total tickets sold: 20
+[2024-12-12 09:08:04] Real-Time Status: Pool Size: 0, Tickets Sold: 20, Remaining Tickets: 30, Waiting Customers: 10, Waiting Vendors: 0
+[2024-12-12 09:08:06] Vendor 5 added Ticket[ID=21, Seat='Seat-21', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:06] Ticket purchased: Ticket[ID=21, Seat='Seat-21', Event='Concert Event']. Total tickets sold: 21
+[2024-12-12 09:08:06] Vendor 4 added Ticket[ID=22, Seat='Seat-22', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:06] Ticket purchased: Ticket[ID=22, Seat='Seat-22', Event='Concert Event']. Total tickets sold: 22
+[2024-12-12 09:08:06] Vendor 1 added Ticket[ID=23, Seat='Seat-23', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:06] Ticket purchased: Ticket[ID=23, Seat='Seat-23', Event='Concert Event']. Total tickets sold: 23
+[2024-12-12 09:08:06] Vendor 3 added Ticket[ID=24, Seat='Seat-24', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:06] Ticket purchased: Ticket[ID=24, Seat='Seat-24', Event='Concert Event']. Total tickets sold: 24
+[2024-12-12 09:08:06] Vendor 2 added Ticket[ID=25, Seat='Seat-25', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:06] Ticket purchased: Ticket[ID=25, Seat='Seat-25', Event='Concert Event']. Total tickets sold: 25
+[2024-12-12 09:08:06] Real-Time Status: Pool Size: 0, Tickets Sold: 25, Remaining Tickets: 25, Waiting Customers: 10, Waiting Vendors: 0
+[2024-12-12 09:08:08] Vendor 5 added Ticket[ID=26, Seat='Seat-26', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:08] Ticket purchased: Ticket[ID=26, Seat='Seat-26', Event='Concert Event']. Total tickets sold: 26
+[2024-12-12 09:08:08] Vendor 4 added Ticket[ID=27, Seat='Seat-27', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:08] Ticket purchased: Ticket[ID=27, Seat='Seat-27', Event='Concert Event']. Total tickets sold: 27
+[2024-12-12 09:08:08] Vendor 1 added Ticket[ID=28, Seat='Seat-28', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:08] Ticket purchased: Ticket[ID=28, Seat='Seat-28', Event='Concert Event']. Total tickets sold: 28
+[2024-12-12 09:08:08] Vendor 3 added Ticket[ID=29, Seat='Seat-29', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:08] Ticket purchased: Ticket[ID=29, Seat='Seat-29', Event='Concert Event']. Total tickets sold: 29
+[2024-12-12 09:08:08] Vendor 2 added Ticket[ID=30, Seat='Seat-30', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:08] Real-Time Status: Pool Size: 0, Tickets Sold: 29, Remaining Tickets: 21, Waiting Customers: 9, Waiting Vendors: 0
+[2024-12-12 09:08:08] Ticket purchased: Ticket[ID=30, Seat='Seat-30', Event='Concert Event']. Total tickets sold: 30
+[2024-12-12 09:08:10] Vendor 5 added Ticket[ID=31, Seat='Seat-31', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:10] Ticket purchased: Ticket[ID=31, Seat='Seat-31', Event='Concert Event']. Total tickets sold: 31
+[2024-12-12 09:08:10] 9 customers and 0 vendors are currently waiting.
+[2024-12-12 09:08:10] Vendor 4 added Ticket[ID=32, Seat='Seat-32', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:10] Ticket purchased: Ticket[ID=32, Seat='Seat-32', Event='Concert Event']. Total tickets sold: 32
+[2024-12-12 09:08:10] Vendor 1 added Ticket[ID=33, Seat='Seat-33', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:10] Ticket purchased: Ticket[ID=33, Seat='Seat-33', Event='Concert Event']. Total tickets sold: 33
+[2024-12-12 09:08:10] Real-Time Status: Pool Size: 0, Tickets Sold: 33, Remaining Tickets: 17, Waiting Customers: 9, Waiting Vendors: 0
+[2024-12-12 09:08:10] Vendor 2 added Ticket[ID=34, Seat='Seat-34', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:10] Ticket purchased: Ticket[ID=34, Seat='Seat-34', Event='Concert Event']. Total tickets sold: 34
+[2024-12-12 09:08:10] Vendor 3 added Ticket[ID=35, Seat='Seat-35', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:10] Ticket purchased: Ticket[ID=35, Seat='Seat-35', Event='Concert Event']. Total tickets sold: 35
+[2024-12-12 09:08:12] Vendor 5 added Ticket[ID=36, Seat='Seat-36', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:12] Ticket purchased: Ticket[ID=36, Seat='Seat-36', Event='Concert Event']. Total tickets sold: 36
+[2024-12-12 09:08:12] Vendor 1 added Ticket[ID=37, Seat='Seat-37', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:12] Ticket purchased: Ticket[ID=37, Seat='Seat-37', Event='Concert Event']. Total tickets sold: 37
+[2024-12-12 09:08:12] Vendor 4 added Ticket[ID=38, Seat='Seat-38', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:12] Ticket purchased: Ticket[ID=38, Seat='Seat-38', Event='Concert Event']. Total tickets sold: 38
+[2024-12-12 09:08:12] Real-Time Status: Pool Size: 0, Tickets Sold: 38, Remaining Tickets: 12, Waiting Customers: 9, Waiting Vendors: 0
+[2024-12-12 09:08:12] Vendor 3 added Ticket[ID=39, Seat='Seat-39', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:12] Ticket purchased: Ticket[ID=39, Seat='Seat-39', Event='Concert Event']. Total tickets sold: 39
+[2024-12-12 09:08:12] Vendor 2 added Ticket[ID=40, Seat='Seat-40', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:12] Ticket purchased: Ticket[ID=40, Seat='Seat-40', Event='Concert Event']. Total tickets sold: 40
+[2024-12-12 09:08:14] Vendor 5 added Ticket[ID=41, Seat='Seat-41', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:14] Vendor 1 added Ticket[ID=42, Seat='Seat-42', Event='Concert Event']. Current pool size: 2/20
+[2024-12-12 09:08:14] Ticket purchased: Ticket[ID=41, Seat='Seat-41', Event='Concert Event']. Total tickets sold: 41
+[2024-12-12 09:08:14] Ticket purchased: Ticket[ID=42, Seat='Seat-42', Event='Concert Event']. Total tickets sold: 42
+[2024-12-12 09:08:14] Vendor 4 added Ticket[ID=43, Seat='Seat-43', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:14] Ticket purchased: Ticket[ID=43, Seat='Seat-43', Event='Concert Event']. Total tickets sold: 43
+[2024-12-12 09:08:14] Vendor 3 added Ticket[ID=44, Seat='Seat-44', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:14] Ticket purchased: Ticket[ID=44, Seat='Seat-44', Event='Concert Event']. Total tickets sold: 44
+[2024-12-12 09:08:14] Real-Time Status: Pool Size: 0, Tickets Sold: 44, Remaining Tickets: 6, Waiting Customers: 9, Waiting Vendors: 0
+[2024-12-12 09:08:14] Vendor 2 added Ticket[ID=45, Seat='Seat-45', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:14] Ticket purchased: Ticket[ID=45, Seat='Seat-45', Event='Concert Event']. Total tickets sold: 45
+[2024-12-12 09:08:16] Vendor 5 added Ticket[ID=46, Seat='Seat-46', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:16] Ticket purchased: Ticket[ID=46, Seat='Seat-46', Event='Concert Event']. Total tickets sold: 46
+[2024-12-12 09:08:16] 9 customers and 0 vendors are currently waiting.
+[2024-12-12 09:08:16] Vendor 1 added Ticket[ID=47, Seat='Seat-47', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:16] Ticket purchased: Ticket[ID=47, Seat='Seat-47', Event='Concert Event']. Total tickets sold: 47
+[2024-12-12 09:08:16] Vendor 4 added Ticket[ID=48, Seat='Seat-48', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:16] Ticket purchased: Ticket[ID=48, Seat='Seat-48', Event='Concert Event']. Total tickets sold: 48
+[2024-12-12 09:08:16] Vendor 3 added Ticket[ID=49, Seat='Seat-49', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:16] Ticket purchased: Ticket[ID=49, Seat='Seat-49', Event='Concert Event']. Total tickets sold: 49
+[2024-12-12 09:08:16] Real-Time Status: Pool Size: 0, Tickets Sold: 49, Remaining Tickets: 1, Waiting Customers: 10, Waiting Vendors: 0
+[2024-12-12 09:08:16] Vendor 2 added Ticket[ID=50, Seat='Seat-50', Event='Concert Event']. Current pool size: 1/20
+[2024-12-12 09:08:16] Ticket purchased: Ticket[ID=50, Seat='Seat-50', Event='Concert Event']. Total tickets sold: 50
+[2024-12-12 09:08:16] All tickets sold! Terminating the system...

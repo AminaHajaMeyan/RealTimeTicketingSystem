@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ResetService } from '../services/reset.service';
 
 @Component({
   selector: 'app-ticket-progress-bar',
@@ -9,23 +8,16 @@ import { ResetService } from '../services/reset.service';
 })
 export class TicketProgressBarComponent implements OnInit, OnDestroy {
   private socket: WebSocket | null = null;
-
-  // Define the status object
   status = {
     totalTickets: 0,
     ticketsSold: 0,
     remainingTickets: 0
   };
 
-  constructor(private resetService: ResetService) {}
+  constructor() {}
 
   ngOnInit(): void {
     this.connectToWebSocket();
-
-    // Subscribe to reset events
-    this.resetService.reset$.subscribe(() => {
-      this.resetProgressBar();
-    });
   }
 
   ngOnDestroy(): void {
@@ -38,46 +30,20 @@ export class TicketProgressBarComponent implements OnInit, OnDestroy {
     this.socket = new WebSocket('ws://localhost:8080/live-updates');
 
     this.socket.onmessage = (event) => {
-      const message = event.data;
+      const data = JSON.parse(event.data);
+      this.status = data;
+      console.log('Received WebSocket Data:', data); // Debug log
+    };
 
-      try {
-        const data = JSON.parse(message);
+    this.socket.onerror = (error) => {
+      console.error('WebSocket Error:', error);
+    };
 
-        // Process only pool status messages
-        if (data.totalTickets !== undefined) {
-          this.status = {
-            totalTickets: data.totalTickets,
-            ticketsSold: data.ticketsSold,
-            remainingTickets: data.remainingTickets,
-          };
-        }
-      } catch (e) {
-        console.error('Error parsing WebSocket message:', message, e);
-      }
+    this.socket.onclose = () => {
+      console.log('WebSocket connection closed.');
     };
   }
 
-
-
-  resetProgressBar(): void {
-    console.log('Progress bar reset.');
-    this.status = {
-      totalTickets: 0,
-      ticketsSold: 0,
-      remainingTickets: 0
-    };
-
-    if (this.socket) {
-      this.socket.close();
-      this.socket = null;
-    }
-
-    setTimeout(() => {
-      this.connectToWebSocket();
-    }, 500);
-  }
-
-  // Define the progress getter
   get progress(): number {
     return this.status.totalTickets
       ? (this.status.ticketsSold / this.status.totalTickets) * 100
